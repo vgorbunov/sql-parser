@@ -65,6 +65,12 @@ public final class DataTypeDescriptor
 {
     public static final int MAXIMUM_WIDTH_UNKNOWN = -1;
 
+    public static final DataTypeDescriptor MEDIUMINT =
+        new DataTypeDescriptor(TypeId.MEDIUMINT_ID, true);
+    
+    public static final DataTypeDescriptor MEDIUMINT_NOT_NULL =
+        MEDIUMINT.getNullabilityType(true);
+    
     /**
      * Runtime INTEGER type that is nullable.
      */
