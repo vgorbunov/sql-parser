@@ -4209,7 +4209,7 @@ DataTypeDescriptor
 exactIntegerType() throws StandardException :
 {}
 {
-    ( <INTEGER> | <INT>)
+    ( <INTEGER> | <INT> )
     {
         return DataTypeDescriptor.getBuiltInDataTypeDescriptor(Types.INTEGER);
     }
