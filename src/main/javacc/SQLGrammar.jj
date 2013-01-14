@@ -4138,6 +4138,8 @@ numericType() throws StandardException :
 }
 {
 (
+    <MEDIUMINT> {typeDescriptor = DataTypeDescriptor.MEDIUMINT;}
+|
     typeDescriptor = exactNumericType()
 |
     typeDescriptor = approximateNumericType()
