@@ -1,0 +1,6 @@
+com.akiban.sql
+com.akiban.sql.compiler
+com.akiban.sql.parser
+com.akiban.sql.types
+com.akiban.sql.unparser
+com.akiban.sql.views
