@@ -1,13 +1,13 @@
-com.akiban.sql.parser.CreateTableNode@3f1a6bc7
+com.akiban.sql.parser.CreateTableNode@44ee06be
 name: t
 statementType: CREATE TABLE
 lockGranularity: R
 existenceCheck: NO_CONDITION
 tableElementList: 	
-	com.akiban.sql.parser.TableElementList@5f99f62e
+	com.akiban.sql.parser.TableElementList@66fcc74c
 
 	[0]:	
-	com.akiban.sql.parser.ColumnDefinitionNode@74f1770a
-	type: INTEGER
+	com.akiban.sql.parser.ColumnDefinitionNode@5d808366
+	type: MEDIUMINT
 	name: c
 	elementType: null

@@ -332,6 +332,7 @@ public class TypeId
     public static final TypeId INTERVAL_MINUTE_SECOND_ID = new TypeId(FormatIds.INTERVAL_DAY_SECOND_ID, INTERVAL_MINUTE_SECOND_NAME);
 
     public static final TypeId SMALLINT_UNSIGNED_ID = new TypeId(FormatIds.SMALLINT_TYPE_ID, true);
+    public static final TypeId MEDIUMINT_UNSIGNED_ID = new TypeId(FormatIds.MEDIUMINT_ID, true);
     public static final TypeId INTEGER_UNSIGNED_ID = new TypeId(FormatIds.INT_TYPE_ID, true);
     public static final TypeId TINYINT_UNSIGNED_ID = new TypeId(FormatIds.TINYINT_TYPE_ID, true);
     public static final TypeId BIGINT_UNSIGNED_ID = new TypeId(FormatIds.LONGINT_TYPE_ID, true);
@@ -1155,6 +1156,8 @@ public class TypeId
             case FormatIds.TINYINT_TYPE_ID:
                 unqualifiedName = TypeId.TINYINT_UNSIGNED_NAME;
                 break;
+            case FormatIds.MEDIUMINT_ID:
+                unqualifiedName = TypeId.MEDIUMINT_UNSIGNED_NAME;
             default:
                 assert false;
             }
