@@ -8822,11 +8822,17 @@ void
 indexHintIndex(List<String> indexes) throws StandardException :
 {
     String index;
+    Token token;
 }
 {
     index = identifier()
     {
         indexes.add(index);
+    }
+|
+    token = <PRIMARY>
+    {
+        indexes.add(token.image);
     }
 }
 
