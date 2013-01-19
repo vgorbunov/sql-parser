@@ -1158,8 +1158,9 @@ public class TypeId
                 break;
             case FormatIds.MEDIUMINT_ID:
                 unqualifiedName = TypeId.MEDIUMINT_UNSIGNED_NAME;
+                break;
             default:
-                assert false;
+                assert false : "unknown formatId: " + formatId;
             }
         }
     }
