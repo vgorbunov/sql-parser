@@ -1094,9 +1094,12 @@ public final class DataTypeDescriptor
     }
 
     public DataTypeDescriptor getUnsigned() throws StandardException {
+
         TypeId unsignedTypeId;
         if (typeId == TypeId.SMALLINT_ID)
             unsignedTypeId = TypeId.SMALLINT_UNSIGNED_ID;
+        else if (typeId == TypeId.MEDIUMINT_ID)
+            unsignedTypeId = TypeId.MEDIUMINT_UNSIGNED_ID;
         else if (typeId == TypeId.INTEGER_ID)
             unsignedTypeId = TypeId.INTEGER_UNSIGNED_ID;
         else if (typeId == TypeId.TINYINT_ID)
