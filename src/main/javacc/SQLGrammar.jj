@@ -497,6 +497,7 @@ class SQLGrammar
         case CHAR:
         case VARCHAR:
         case INTEGER:
+        case MEDIUMINT:
         case INT:
         case SMALLINT:
         case LONGINT:
@@ -1049,6 +1050,7 @@ class SQLGrammar
         case DECIMAL:
         case DEC:
         case INTEGER:
+        case MEDIUMINT:
         case INT:
         case SMALLINT:
         case LONGINT:
@@ -2147,6 +2149,7 @@ TOKEN [IGNORE_CASE] :
 | <INSERT: "insert">
 | <INT: "int">
 | <INTEGER: "integer">
+| <MEDIUMINT: "mediumint">
 | <INTERSECT: "intersect">
 | <INTO: "into">
 | <IS: "is">
@@ -4135,6 +4138,8 @@ numericType() throws StandardException :
 }
 {
 (
+    <MEDIUMINT> {typeDescriptor = DataTypeDescriptor.MEDIUMINT;}
+|
     typeDescriptor = exactNumericType()
 |
     typeDescriptor = approximateNumericType()
@@ -4207,6 +4212,10 @@ exactIntegerType() throws StandardException :
     ( <INTEGER> | <INT> )
     {
         return DataTypeDescriptor.getBuiltInDataTypeDescriptor(Types.INTEGER);
+    }
+    <MEDIUMINT>
+    {
+        return DataTypeDescriptor.MEDIUMINT;
     }
 |
     <SMALLINT>
@@ -14574,6 +14583,7 @@ reservedKeyword() :
 | tok = <INSERT>
 | tok = <INT>
 | tok = <INTEGER>
+| tok = <MEDIUMINT>
 | tok = <INTERSECT>
 | tok = <INTERVAL>
 | tok = <INTO>
