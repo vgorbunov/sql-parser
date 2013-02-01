@@ -423,7 +423,8 @@ public class NodeToString
                 "RENAME COLUMN " + node.getOldObjectName() +
                 " TO " + node.getNewObjectName();
         }
-        else if (node.getRenameType() == RenameNode.RenameType.INDEX) {
+        else if (node.getRenameType() == RenameNode.RenameType.INDEX
+                    || node.getRenameType() == RenameNode.RenameType.COLUMN) {
             if (node.getObjectName() == null) {
                 return node.statementToString() + " " + node.getOldObjectName() +
                     " TO " + node.getNewObjectName();
@@ -433,11 +434,6 @@ public class NodeToString
                     "." + node.getOldObjectName() +
                     " TO " + node.getNewObjectName();
             }
-        }
-        else if (node.getRenameType() == RenameNode.RenameType.COLUMN)
-        {
-            return node.statementToString() + " " + toString(node.getObjectName())
-                    + "TO " + node.getNewObjectName();
         }
         else {
             return node.statementToString() + " " + toString(node.getObjectName()) +
