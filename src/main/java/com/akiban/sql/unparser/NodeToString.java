@@ -434,6 +434,11 @@ public class NodeToString
                     " TO " + node.getNewObjectName();
             }
         }
+        else if (node.getRenameType() == RenameNode.RenameType.COLUMN)
+        {
+            return node.statementToString() + " " + toString(node.getObjectName())
+                    + "TO " + node.getNewObjectName();
+        }
         else {
             return node.statementToString() + " " + toString(node.getObjectName()) +
                 " TO " + toString(node.getNewTableName());
