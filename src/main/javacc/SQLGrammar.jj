@@ -11907,13 +11907,14 @@ renameColumnStatement() throws StandardException :
         if ((tableName = oldColumnReference.getTableNameNode()) == null)
             throw new StandardException("Table name missing in RENAME COLUMN");
 
-        tableElementList = (TableElementList)
-            nodeFactory.getNode(NodeTypes.TABLE_ELEMENT_LIST, parserContext);
+        tableElementList = (TableElementList)nodeFactory
+                    .getNode(NodeTypes.TABLE_ELEMENT_LIST, parserContext);
 
-        tableElementList.addTableElement((TableElementNode)nodeFactory.getNode(NodeTypes.AT_RENAME_COLUMN_NODE,
-                                                             oldColumnReference.getColumnName(),
-                                                             newColumnName,
-                                                             parserContext));
+        tableElementList.addTableElement((TableElementNode)nodeFactory
+                    .getNode(NodeTypes.AT_RENAME_COLUMN_NODE,
+                             oldColumnReference.getColumnName(),
+                             newColumnName,
+                             parserContext));
 
         return (StatementNode)nodeFactory.getNode(NodeTypes.ALTER_TABLE_NODE,
                                                   tableName,
