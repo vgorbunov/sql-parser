@@ -13210,7 +13210,7 @@ alterTableAction(TableElementList tableElementList, int[] changeType, int[] beha
     <RENAME>
     (
         LOOKAHEAD ( {getToken(1).kind == COLUMN} )
-        <COLUMN> name = identifier() (<TO> | <AS>) newCName = identifier()
+        <COLUMN> name = identifier() [<TO> | <AS>] newCName = identifier()
         {
             tableElement = (TableElementNode)nodeFactory.getNode(NodeTypes.AT_RENAME_COLUMN_NODE,
                                                                  name,
