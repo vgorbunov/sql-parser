@@ -11897,20 +11897,32 @@ renameColumnStatement() throws StandardException :
 {
     String newColumnName;
     ColumnReference oldColumnReference;
+    TableElementList tableElementList;
+    TableName tableName;
 }
 {
     <COLUMN> oldColumnReference = columnReference()
     <TO> newColumnName = identifier()
     {
-        if (oldColumnReference.getTableNameNode() == null)
+        if ((tableName = oldColumnReference.getTableNameNode()) == null)
             throw new StandardException("Table name missing in RENAME COLUMN");
-        return (StatementNode)nodeFactory.getNode(NodeTypes.RENAME_NODE,
-                                                  oldColumnReference.getTableNameNode(),
-                                                  oldColumnReference.getColumnName(),
-                                                  newColumnName,
-                                                  Boolean.FALSE,
-                                                  RenameNode.RenameType.COLUMN,
-                                                  parserContext);
+
+        tableElementList = (TableElementList)nodeFactory
+                    .getNode(NodeTypes.TABLE_ELEMENT_LIST, parserContext);
+
+        tableElementList.addTableElement((TableElementNode)nodeFactory
+                    .getNode(NodeTypes.AT_RENAME_COLUMN_NODE,
+                             oldColumnReference.getColumnName(),
+                             newColumnName,
+                             parserContext));
+
+        return (StatementNode)nodeFactory.getNode(NodeTypes.ALTER_TABLE_NODE,
+                                                  tableName,
+                                                  tableElementList,
+                                                  new Character('\0'),
+                                                  new int[] {DDLStatementNode.MODIFY_TYPE},
+                                                  new int[] {0},
+                                                  parserContext);  
     }
 }
 
@@ -13164,6 +13176,7 @@ alterTableAction(TableElementList tableElementList, int[] changeType, int[] beha
     DataTypeDescriptor  typeDescriptor;
     Token tok = null;
     String name;
+    String newCName;
     TableName newName;
     long[] autoIncrementInfo = new long[4];
 }
@@ -13206,12 +13219,27 @@ alterTableAction(TableElementList tableElementList, int[] changeType, int[] beha
         tableElementList.addTableElement(tableElement);
     }
 |
-    <RENAME> [<TO> | <AS>] newName = qualifiedName()
+    <RENAME>
+    (
+        LOOKAHEAD ( {getToken(1).kind == COLUMN} )
+        <COLUMN> name = identifier() [<TO> | <AS>] newCName = identifier()
+        {
+            tableElement = (TableElementNode)nodeFactory.getNode(NodeTypes.AT_RENAME_COLUMN_NODE,
+                                                                 name,
+                                                                 newCName,
+                                                                 parserContext);
+        }
+    |
+        [<TABLE>] [<TO> | <AS>] newName = qualifiedName()
+        {
+            tableElement = (TableElementNode)nodeFactory.getNode(NodeTypes.AT_RENAME_NODE,
+                                                                 newName,
+                                                                 parserContext);
+        }
+    )
     {
+
         changeType[0] = DDLStatementNode.MODIFY_TYPE;
-        tableElement = (TableElementNode)nodeFactory.getNode(NodeTypes.AT_RENAME_NODE,
-                                                             newName,
-                                                             parserContext);
         tableElementList.addTableElement(tableElement);
     }
 }
