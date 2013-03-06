@@ -20,7 +20,7 @@ package com.akiban.sql.parser;
 import com.akiban.sql.StandardException;
 import com.akiban.sql.parser.JoinNode.JoinType;
 
-public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode
+public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode implements IndexDefinition
 {
     private String indexName;
     private IndexColumnList indexColumnList;
@@ -67,6 +67,17 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode
     public StorageLocation getLocation()
     {
         return location;
+    }
+    
+    // This is used for the non-unique "INDEX" defintions only
+    public boolean getUniqueness() 
+    {
+        return false;
+    }
+    
+    public TableName getObjectName()
+    {
+        return constraintName;
     }
     
     @Override
