@@ -36,10 +36,10 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode
     {
         super.init(tableName,
                    ConstraintType.INDEX,
-                   null, // properties : don't need
                    null, // column list? don't need. Use indexColumnList instead
-                   null, // constrainText ? 
-                   null, // conditionCheck ?
+                   null, // properties - none
+                   null, // constrainText  - none
+                   null, // conditionCheck  - none
                    StatementType.UNKNOWN, // behaviour? 
                    ConstraintType.INDEX);
         
@@ -58,7 +58,7 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode
     {
         return indexColumnList;
     }
-    
+
     public JoinType getJoinType()
     {
         return joinType;
@@ -86,9 +86,18 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode
     {
         return super.toString()
                 + "\nindexName: " + indexName
-                + "\nindexColumnList: " + indexColumnList
                 + "\njoinType: " + joinType
                 + "\nlocation: " + location
                 ;
     }
+
+    @Override
+    public void printSubNodes(int depth) {
+        super.printSubNodes(depth);
+        if (indexColumnList != null) {
+            printLabel(depth, "indexColumnList: ");
+            indexColumnList.treePrint(depth + 1);
+        }
+    }
+    
 }
