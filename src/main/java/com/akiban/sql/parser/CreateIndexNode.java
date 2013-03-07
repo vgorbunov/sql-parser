@@ -52,7 +52,7 @@ import java.util.Properties;
  *
  */
 
-public class CreateIndexNode extends DDLStatementNode
+public class CreateIndexNode extends DDLStatementNode implements IndexDefinition
 {
     boolean unique;
     String indexType;
@@ -158,6 +158,9 @@ public class CreateIndexNode extends DDLStatementNode
         return indexName; 
     }
     public IndexColumnList getColumnList() {
+        return columnList;
+    }
+    public IndexColumnList getIndexColumnList() {
         return columnList;
     }
     public JoinType getJoinType() {

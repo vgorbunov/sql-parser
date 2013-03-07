@@ -20,7 +20,7 @@ package com.akiban.sql.parser;
 import com.akiban.sql.StandardException;
 import com.akiban.sql.parser.JoinNode.JoinType;
 
-public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode
+public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode implements IndexDefinition
 {
     private String indexName;
     private IndexColumnList indexColumnList;
@@ -36,10 +36,10 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode
     {
         super.init(tableName,
                    ConstraintType.INDEX,
-                   null, // properties : don't need
                    null, // column list? don't need. Use indexColumnList instead
-                   null, // constrainText ? 
-                   null, // conditionCheck ?
+                   null, // properties - none
+                   null, // constrainText  - none
+                   null, // conditionCheck  - none
                    StatementType.UNKNOWN, // behaviour? 
                    ConstraintType.INDEX);
         
@@ -58,7 +58,7 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode
     {
         return indexColumnList;
     }
-    
+
     public JoinType getJoinType()
     {
         return joinType;
@@ -67,6 +67,17 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode
     public StorageLocation getLocation()
     {
         return location;
+    }
+    
+    // This is used for the non-unique "INDEX" defintions only
+    public boolean getUniqueness() 
+    {
+        return false;
+    }
+    
+    public TableName getObjectName()
+    {
+        return constraintName;
     }
     
     @Override
@@ -86,9 +97,18 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode
     {
         return super.toString()
                 + "\nindexName: " + indexName
-                + "\nindexColumnList: " + indexColumnList
                 + "\njoinType: " + joinType
                 + "\nlocation: " + location
                 ;
     }
+
+    @Override
+    public void printSubNodes(int depth) {
+        super.printSubNodes(depth);
+        if (indexColumnList != null) {
+            printLabel(depth, "indexColumnList: ");
+            indexColumnList.treePrint(depth + 1);
+        }
+    }
+    
 }

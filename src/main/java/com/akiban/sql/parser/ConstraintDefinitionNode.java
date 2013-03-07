@@ -56,7 +56,7 @@ public class ConstraintDefinitionNode extends TableElementNode
         NOT_NULL, PRIMARY_KEY, UNIQUE, CHECK, DROP, FOREIGN_KEY, INDEX
     }
 
-    private TableName constraintName;
+    protected TableName constraintName;
     protected ConstraintType constraintType;
     protected Properties properties;
     private ResultColumnList columnList;

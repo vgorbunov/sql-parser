@@ -25,6 +25,13 @@ tableElementList:
 	elementType: AT_DROP_CONSTRAINT
 	
 	indexName: indx1
-	indexColumnList: 
 	joinType: null
 	location: BTREE
+	indexColumnList: 		
+		com.akiban.sql.parser.IndexColumnList@114beb40
+
+		[0]:		
+		com.akiban.sql.parser.IndexColumn@f41bf9f
+		columnName: c1
+		tableName: null
+		descending
