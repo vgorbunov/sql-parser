@@ -385,6 +385,8 @@ public class NodeToString
 
     protected String createAliasNode(CreateAliasNode node) throws StandardException {
         StringBuilder str = new StringBuilder(node.statementToString());
+        if (node.isCreateOrReplace())
+            str.insert(6, " OR REPLACE");
         str.append(' ');
         str.append(toString(node.getObjectName()));
         switch (node.getAliasType()) {

@@ -607,6 +607,7 @@ public abstract class NodeFactory
                                             Object targetName,
                                             Object aliasSpecificInfo,
                                             AliasInfo.Type aliasType,
+                                            Boolean createOrReplace,
                                             SQLParserContext pc)
             throws StandardException {
         int nodeType = NodeTypes.CREATE_ALIAS_NODE;
@@ -639,6 +640,7 @@ public abstract class NodeFactory
                        methodName,
                        aliasSpecificInfo,
                        aliasType,
+                       createOrReplace,
                        pc);
     }
 
