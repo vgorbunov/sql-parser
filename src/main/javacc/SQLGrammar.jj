@@ -13459,7 +13459,9 @@ columnAlterClause(String columnName) throws StandardException :
     }
 |
     LOOKAHEAD( { getToken(1).kind == WITH || getToken(1).kind == _DEFAULT ||
-                                 (getToken(1).kind == SET && getToken(2).kind == _DEFAULT) } )
+                 getToken(1).kind == GENERATED ||
+                (getToken(1).kind == SET && (getToken(2).kind == _DEFAULT ||
+                                             getToken(2).kind == GENERATED)) } )
     [<SET>] defaultNode = defaultClause(autoIncrementInfo, columnName)
     {
         return wrapAlterColumnDefaultValue(defaultNode,
