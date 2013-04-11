@@ -26,6 +26,8 @@ tableElementList:
 	[1]:	
 	com.akiban.sql.parser.ColumnDefinitionNode@25fa1bb6
 	type: INTEGER NOT NULL
+	autoIncrementStart: 1
+	autoIncrementIncrement: 1
 	name: c1
 	elementType: null
 	default: 		

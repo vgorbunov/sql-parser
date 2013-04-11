@@ -178,6 +178,10 @@ public class ColumnDefinitionNode extends TableElementNode
 
     public String toString() {
         return "type: " + getType() + "\n" +
+            (!isAutoincrementColumn() ? "" : (
+             "autoIncrementStart: " + getAutoincrementStart() + "\n" +
+             "autoIncrementIncrement: " + getAutoincrementIncrement() + "\n"
+            )) +
             super.toString();
     }
 
