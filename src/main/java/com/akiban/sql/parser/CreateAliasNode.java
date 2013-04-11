@@ -77,6 +77,7 @@ public class CreateAliasNode extends DDLStatementNode
 
     private String javaClassName;
     private String methodName;
+    private boolean createOrReplace;
     private AliasInfo.Type aliasType; 
     private AliasInfo aliasInfo;
     private String definition;
@@ -95,10 +96,12 @@ public class CreateAliasNode extends DDLStatementNode
                      Object targetObject,
                      Object methodName,
                      Object aliasSpecificInfo,
-                     Object aliasType) 
+                     Object aliasType,
+                     Object createOrReplace) 
             throws StandardException {
         TableName qn = (TableName)aliasName;
         this.aliasType = (AliasInfo.Type)aliasType;
+        this.createOrReplace = (Boolean)createOrReplace;
 
         initAndCheck(qn);
 
@@ -122,9 +125,10 @@ public class CreateAliasNode extends DDLStatementNode
                 // 4 - String external name (also passed directly to create alias node - ignore
                 // 5 - ParameterStyle parameter style 
                 // 6 - SQLAllowed - SQL control
-                // 7 - Boolean - whether the routine is DETERMINISTIC
-                // 8 - Boolean - CALLED ON NULL INPUT (always TRUE for procedures)
-                // 9 - DataTypeDescriptor - return type (always NULL for procedures)
+                // 7 - Boolean - CALLED ON NULL INPUT (always TRUE for procedures)
+                // 8 - DataTypeDescriptor - return type (always NULL for procedures)
+                // 9 - Boolean - definers rights
+                // 10 - String - inline definition
 
                 Object[] routineElements = (Object[])aliasSpecificInfo;
                 Object[] parameters = (Object[])routineElements[PARAMETER_ARRAY];
@@ -231,6 +235,10 @@ public class CreateAliasNode extends DDLStatementNode
             return javaClassName + "." + methodName;
     }
 
+    public boolean isCreateOrReplace() {
+        return createOrReplace;
+    }
+
     public AliasInfo.Type getAliasType() {
         return aliasType;
     }
@@ -253,6 +261,7 @@ public class CreateAliasNode extends DDLStatementNode
     public String toString() {
         return "aliasType: " + aliasType + "\n" +
             "aliasInfo: " + aliasInfo + "\n" +
+            "createOrReplace: " + createOrReplace + "\n" +
             ((definition != null) ? 
              ("definition: " + definition + "\n") :
              ("javaClassName: " + javaClassName + "\n" +
