@@ -10122,6 +10122,7 @@ dropSequenceStatement() throws StandardException :
     {
         return (StatementNode)nodeFactory.getNode(NodeTypes.DROP_SEQUENCE_NODE,
                                                   sequenceName,
+                                                  new Integer(StatementType.DROP_RESTRICT),
                                                   cond,
                                                   parserContext);
     }
