@@ -1,4 +1,5 @@
 com.akiban.sql.parser.DropSequenceNode@62c09554
 name: test.new_sequence
 statementType: DROP SEQUENCE new_sequence
+dropBehavior: 1
 existenceCheck: IF_EXISTS

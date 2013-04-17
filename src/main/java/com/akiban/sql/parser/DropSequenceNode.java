@@ -50,19 +50,24 @@ public class DropSequenceNode extends DDLStatementNode
 {
     private TableName dropItem;
     private ExistenceCheck existenceCheck;
-    
+    private int dropBehavior;
     /**
      * Initializer for a DropSequenceNode
      *
      * @param dropSequenceName The name of the sequence being dropped
      * @throws StandardException
      */
-    public void init(Object dropSequenceName, Object ec) throws StandardException {
+    public void init(Object dropSequenceName, Object dropBehavior, Object ec) throws StandardException {
         dropItem = (TableName)dropSequenceName;
         initAndCheck(dropItem);
+        this.dropBehavior = ((Integer)dropBehavior).intValue();
         this.existenceCheck = (ExistenceCheck)ec;
     }
 
+    public int getDropBehavior() {
+        return dropBehavior;
+    }
+    
     public ExistenceCheck getExistenceCheck()
     {
         return existenceCheck;
@@ -75,6 +80,8 @@ public class DropSequenceNode extends DDLStatementNode
         super.copyFrom(node);
 
         DropSequenceNode other = (DropSequenceNode)node;
+        this.dropBehavior = other.dropBehavior;
+        this.existenceCheck = other.existenceCheck;
         this.dropItem = (TableName)getNodeFactory().copyNode(other.dropItem,
                                                              getParserContext());
     }
@@ -85,6 +92,7 @@ public class DropSequenceNode extends DDLStatementNode
 
     public String toString() {
         return super.toString() + 
-                "existenceCheck: " + existenceCheck + "\n";
+                "dropBehavior: " + dropBehavior + "\n"
+                + "existenceCheck: " + existenceCheck + "\n";
     }
 }

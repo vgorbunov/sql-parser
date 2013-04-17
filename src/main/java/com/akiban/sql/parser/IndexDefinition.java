@@ -1,5 +1,5 @@
 /**
- * Copyright © 2012 Akiban Technologies, Inc.  All rights
+ * Copyright © 2013 Akiban Technologies, Inc.  All rights
  * reserved.
  *
  * This program and the accompanying materials are made available
@@ -23,4 +23,5 @@ public interface IndexDefinition {
     public JoinType getJoinType();
     public IndexColumnList getIndexColumnList();
     public TableName getObjectName();
+    
 }
