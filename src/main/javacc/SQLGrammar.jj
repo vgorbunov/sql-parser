@@ -1066,6 +1066,13 @@ class SQLGrammar
         case BLOB:
         case CLOB:
         case NCLOB:
+        case TEXT:
+        case MEDIUMBLOB:
+        case MEDIUMTEXT:
+        case TINYBLOB:
+        case TINYTEXT:
+        case LONGBLOB:
+        case LONGTEXT:
         case BINARY: // LARGE OBJECT
         case XML:
         case INTERVAL:
@@ -2153,7 +2160,6 @@ TOKEN [IGNORE_CASE] :
 | <INSERT: "insert">
 | <INT: "int">
 | <INTEGER: "integer">
-| <MEDIUMINT: "mediumint">
 | <INTERSECT: "intersect">
 | <INTO: "into">
 | <IS: "is">
@@ -2230,7 +2236,6 @@ TOKEN [IGNORE_CASE] :
 | <TEMPORARY: "temporary">
 | <TIMEZONE_HOUR: "timezone_hour">
 | <TIMEZONE_MINUTE: "timezone_minute">
-| <TINYINT: "tinyint">
 | <TO: "to">
 | <TRANSACTION: "transaction">
 | <TRANSLATE: "translate">
@@ -2381,9 +2386,14 @@ TOKEN [IGNORE_CASE] :
 | <GROUPING: "grouping">
 | <EXPLAIN: "explain">
 | <LIMIT: "limit">
+| <LONGBLOB: "longblob">
 | <LONGINT: "bigint">
+| <LONGTEXT: "longtext">
 | <LONG: "long">
 | <LTRIM: "ltrim">
+| <MEDIUMBLOB: "mediumblob">
+| <MEDIUMINT: "mediumint">
+| <MEDIUMTEXT: "mediumtext">
 | <NONE: "none">
 | <OVER: "over">
 | <RETURNING: "returning">
@@ -2392,6 +2402,10 @@ TOKEN [IGNORE_CASE] :
 | <RTRIM: "rtrim">
 | <STRAIGHT_JOIN: "straight_join">
 | <SUBSTR:  "substr">
+| <TEXT:  "text">
+| <TINYBLOB: "tinyblob">
+| <TINYINT: "tinyint">
+| <TINYTEXT: "tinytext">
 | <XML:  "xml">
 | <XMLEXISTS:    "xmlexists">
 | <XMLPARSE:    "xmlparse">
@@ -4106,6 +4120,7 @@ LOBType() throws StandardException :
 {
     int length = 0x80000000-1;      // default to 2GB-1 if no length specified
     String type;
+    CharacterTypeAttributes characterAttributes;
 }
 {
 (
@@ -4117,6 +4132,11 @@ LOBType() throws StandardException :
     <CLOB> [ length = lengthAndModifier() ]
     {
         type = TypeId.CLOB_NAME;
+    }
+|
+    <TEXT> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.TEXT_NAME;
     }
 |
     <NCLOB> length = lengthAndModifier()
@@ -4138,9 +4158,42 @@ LOBType() throws StandardException :
     {
         type = TypeId.NCLOB_NAME;
     }
+|
+    <TINYBLOB> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.TINYBLOB_NAME;
+    }
+|
+    <TINYTEXT> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.TINYTEXT_NAME;
+    }
+|
+    <MEDIUMBLOB> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.MEDIUMBLOB_NAME;
+    }
+|
+    <MEDIUMTEXT> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.MEDIUMTEXT_NAME;
+    }
+|
+    <LONGBLOB> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.LONGBLOB_NAME;
+    }
+|
+    <LONGTEXT> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.LONGTEXT_NAME;
+    }
 )
+    characterAttributes = characterTypeAttributes()
     {
         DataTypeDescriptor dtd = DataTypeDescriptor.getBuiltInDataTypeDescriptor(type, length);
+        if (characterAttributes != null)
+            dtd = new DataTypeDescriptor(dtd, characterAttributes);
         return dtd;
     }
 }
@@ -14641,7 +14694,6 @@ reservedKeyword() :
 | tok = <INSERT>
 | tok = <INT>
 | tok = <INTEGER>
-| tok = <MEDIUMINT>
 | tok = <INTERSECT>
 | tok = <INTERVAL>
 | tok = <INTO>
@@ -14723,7 +14775,6 @@ reservedKeyword() :
 | tok = <TEMPORARY>
 | tok = <TIMEZONE_HOUR>
 | tok = <TIMEZONE_MINUTE>
-| tok = <TINYINT>
 | tok = <TO>
 | tok = <TRAILING>
 | tok = <TRANSACTION>
@@ -14754,11 +14805,19 @@ reservedKeyword() :
 | tok = <CURRENT_SCHEMA>
 | tok = <EXPLAIN>
 | tok = <GROUPING>
+| tok = <LONGBLOB>
 | tok = <LONGINT>
+| tok = <LONGTEXT>
 | tok = <LTRIM>
+| tok = <MEDIUMBLOB>
+| tok = <MEDIUMINT>
+| tok = <MEDIUMTEXT>
 | tok = <RTRIM>
 | tok = <TRIM>
 | tok = <SUBSTR>
+| tok = <TINYBLOB>
+| tok = <TINYINT>
+| tok = <TINYTEXT>
 | tok = <XML>
 | tok = <XMLPARSE>
 | tok = <XMLSERIALIZE>
