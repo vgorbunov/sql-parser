@@ -498,6 +498,7 @@ class SQLGrammar
         case VARCHAR:
         case INTEGER:
         case MEDIUMINT:
+        case TINYINT:
         case INT:
         case SMALLINT:
         case LONGINT:
@@ -1051,6 +1052,7 @@ class SQLGrammar
         case DEC:
         case INTEGER:
         case MEDIUMINT:
+        case TINYINT:
         case INT:
         case SMALLINT:
         case LONGINT:
@@ -2228,6 +2230,7 @@ TOKEN [IGNORE_CASE] :
 | <TEMPORARY: "temporary">
 | <TIMEZONE_HOUR: "timezone_hour">
 | <TIMEZONE_MINUTE: "timezone_minute">
+| <TINYINT: "tinyint">
 | <TO: "to">
 | <TRANSACTION: "transaction">
 | <TRANSLATE: "translate">
@@ -4150,8 +4153,6 @@ numericType() throws StandardException :
 }
 {
 (
-    <MEDIUMINT> {typeDescriptor = DataTypeDescriptor.MEDIUMINT;}
-|
     typeDescriptor = exactNumericType()
 |
     typeDescriptor = approximateNumericType()
@@ -4225,9 +4226,15 @@ exactIntegerType() throws StandardException :
     {
         return DataTypeDescriptor.getBuiltInDataTypeDescriptor(Types.INTEGER);
     }
+|
     <MEDIUMINT>
     {
         return DataTypeDescriptor.MEDIUMINT;
+    }
+|
+    <TINYINT>
+    {
+        return DataTypeDescriptor.getBuiltInDataTypeDescriptor(Types.TINYINT);
     }
 |
     <SMALLINT>
@@ -14716,6 +14723,7 @@ reservedKeyword() :
 | tok = <TEMPORARY>
 | tok = <TIMEZONE_HOUR>
 | tok = <TIMEZONE_MINUTE>
+| tok = <TINYINT>
 | tok = <TO>
 | tok = <TRAILING>
 | tok = <TRANSACTION>
