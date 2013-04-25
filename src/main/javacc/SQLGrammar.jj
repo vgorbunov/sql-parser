@@ -498,6 +498,7 @@ class SQLGrammar
         case VARCHAR:
         case INTEGER:
         case MEDIUMINT:
+        case TINYINT:
         case INT:
         case SMALLINT:
         case LONGINT:
@@ -1051,6 +1052,7 @@ class SQLGrammar
         case DEC:
         case INTEGER:
         case MEDIUMINT:
+        case TINYINT:
         case INT:
         case SMALLINT:
         case LONGINT:
@@ -1064,6 +1066,13 @@ class SQLGrammar
         case BLOB:
         case CLOB:
         case NCLOB:
+        case TEXT:
+        case MEDIUMBLOB:
+        case MEDIUMTEXT:
+        case TINYBLOB:
+        case TINYTEXT:
+        case LONGBLOB:
+        case LONGTEXT:
         case BINARY: // LARGE OBJECT
         case XML:
         case INTERVAL:
@@ -2151,7 +2160,6 @@ TOKEN [IGNORE_CASE] :
 | <INSERT: "insert">
 | <INT: "int">
 | <INTEGER: "integer">
-| <MEDIUMINT: "mediumint">
 | <INTERSECT: "intersect">
 | <INTO: "into">
 | <IS: "is">
@@ -2378,7 +2386,6 @@ TOKEN [IGNORE_CASE] :
 | <GROUPING: "grouping">
 | <EXPLAIN: "explain">
 | <LIMIT: "limit">
-| <LONGINT: "bigint">
 | <LONG: "long">
 | <LTRIM: "ltrim">
 | <NONE: "none">
@@ -2450,6 +2457,12 @@ TOKEN [IGNORE_CASE] :
 | <LCASE: "lcase">
 | <LOCATE: "locate">
 | <LOCK: "lock">
+| <LONGBLOB: "longblob">
+| <LONGINT: "bigint">
+| <LONGTEXT: "longtext">
+| <MEDIUMBLOB: "mediumblob">
+| <MEDIUMINT: "mediumint">
+| <MEDIUMTEXT: "mediumtext">
 | <MESSAGE_LOCALE: "message_locale">
 | <METHOD: "method">
 | <MICROSECOND: "microsecond">
@@ -2497,6 +2510,10 @@ TOKEN [IGNORE_CASE] :
 | <STDOUT: "stdout">
 | <STRIP: "strip">
 | <STYLE: "style">
+| <TEXT:  "text">
+| <TINYBLOB: "tinyblob">
+| <TINYINT: "tinyint">
+| <TINYTEXT: "tinytext">
 | <TRIGGER: "trigger">
 | <TRUNCATE_END: "truncate_end">
 | <UCASE: "ucase">
@@ -4103,6 +4120,7 @@ LOBType() throws StandardException :
 {
     int length = 0x80000000-1;      // default to 2GB-1 if no length specified
     String type;
+    CharacterTypeAttributes characterAttributes;
 }
 {
 (
@@ -4114,6 +4132,11 @@ LOBType() throws StandardException :
     <CLOB> [ length = lengthAndModifier() ]
     {
         type = TypeId.CLOB_NAME;
+    }
+|
+    <TEXT> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.TEXT_NAME;
     }
 |
     <NCLOB> length = lengthAndModifier()
@@ -4135,9 +4158,42 @@ LOBType() throws StandardException :
     {
         type = TypeId.NCLOB_NAME;
     }
+|
+    <TINYBLOB> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.TINYBLOB_NAME;
+    }
+|
+    <TINYTEXT> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.TINYTEXT_NAME;
+    }
+|
+    <MEDIUMBLOB> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.MEDIUMBLOB_NAME;
+    }
+|
+    <MEDIUMTEXT> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.MEDIUMTEXT_NAME;
+    }
+|
+    <LONGBLOB> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.LONGBLOB_NAME;
+    }
+|
+    <LONGTEXT> [ length = lengthAndModifier() ]
+    {
+        type = TypeId.LONGTEXT_NAME;
+    }
 )
+    characterAttributes = characterTypeAttributes()
     {
         DataTypeDescriptor dtd = DataTypeDescriptor.getBuiltInDataTypeDescriptor(type, length);
+        if (characterAttributes != null)
+            dtd = new DataTypeDescriptor(dtd, characterAttributes);
         return dtd;
     }
 }
@@ -4150,8 +4206,6 @@ numericType() throws StandardException :
 }
 {
 (
-    <MEDIUMINT> {typeDescriptor = DataTypeDescriptor.MEDIUMINT;}
-|
     typeDescriptor = exactNumericType()
 |
     typeDescriptor = approximateNumericType()
@@ -4225,9 +4279,15 @@ exactIntegerType() throws StandardException :
     {
         return DataTypeDescriptor.getBuiltInDataTypeDescriptor(Types.INTEGER);
     }
+|
     <MEDIUMINT>
     {
         return DataTypeDescriptor.MEDIUMINT;
+    }
+|
+    <TINYINT>
+    {
+        return DataTypeDescriptor.getBuiltInDataTypeDescriptor(Types.TINYINT);
     }
 |
     <SMALLINT>
@@ -14634,7 +14694,6 @@ reservedKeyword() :
 | tok = <INSERT>
 | tok = <INT>
 | tok = <INTEGER>
-| tok = <MEDIUMINT>
 | tok = <INTERSECT>
 | tok = <INTERVAL>
 | tok = <INTO>
@@ -14746,7 +14805,6 @@ reservedKeyword() :
 | tok = <CURRENT_SCHEMA>
 | tok = <EXPLAIN>
 | tok = <GROUPING>
-| tok = <LONGINT>
 | tok = <LTRIM>
 | tok = <RTRIM>
 | tok = <TRIM>
@@ -14857,6 +14915,12 @@ nonReservedKeyword() :
 | tok = <LOCKSIZE>
 | tok = <LOGGED>
 | tok = <LONG>
+| tok = <LONGBLOB>
+| tok = <LONGINT>
+| tok = <LONGTEXT>
+| tok = <MEDIUMBLOB>
+| tok = <MEDIUMINT>
+| tok = <MEDIUMTEXT>
 | tok = <MESSAGE_LOCALE>
 | tok = <METHOD>
 | tok = <MICROSECOND>
@@ -14950,11 +15014,15 @@ nonReservedKeyword() :
 | tok = <SYNONYM>
 | tok = <STYLE>
 | tok = <T>
+| tok = <TEXT>
 | tok = <THEN>
 | tok = <TIME>
 | tok = <TIMESTAMP>
 | tok = <TIMESTAMPADD>
 | tok = <TIMESTAMPDIFF>
+| tok = <TINYBLOB>
+| tok = <TINYINT>
+| tok = <TINYTEXT>
 | tok = <TRIGGER>
 | tok = <TRUNCATE>
 | tok = <TRUNCATE_END>
