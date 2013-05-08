@@ -4,6 +4,13 @@
     
     <modelVersion>4.0.0</modelVersion>
     
+    <!-- Required for deploying to Sonatype -->
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
     <groupId>com.akiban</groupId>
     <artifactId>akiban-sql-parser</artifactId>
     <version>1.0.15-SNAPSHOT</version>
