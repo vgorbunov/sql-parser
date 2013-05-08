@@ -1,17 +1,57 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
     <modelVersion>4.0.0</modelVersion>
+    
     <groupId>com.akiban</groupId>
     <artifactId>akiban-sql-parser</artifactId>
-    <packaging>jar</packaging>
     <version>1.0.15-SNAPSHOT</version>
-    <name>akiban-sql-parser</name>
-    <url>http://maven.apache.org</url>
+    <packaging>jar</packaging>
+
+    <name>Akiban SQL Parser</name>
+    <description>Production quality Java parser for the SQL language.</description>
+    <url>https://launchpad.net/akiban-sql-parser/</url>
+
+    <licenses>
+        <license>
+            <name>Eclipse Public License v1.0</name>
+            <url>http://www.eclipse.org/legal/epl-v10.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://code.launchpad.net/akiban-sql-parser</url>
+        <connection>scm:bazaar:https://code.launchpad.net/akiban-sql-parser</connection>
+    </scm>
+
+    <organization>
+        <name>Akiban Technologies, Inc</name>
+        <url>http://www.akiban.com</url>
+    </organization>
+    
+    <developers>
+        <developer>
+            <id>mmcm</id>
+            <name>Mike McMahon</name>
+            <email>mike.mcmahon@akiban.com</email>
+            <organization>Akiban Technologies, Inc.</organization>
+            <organizationUrl>http://www.akiban.com</organizationUrl>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>-5</timezone>
+        </developer>
+    </developers>
+
     <properties>
         <BZR_REVISION></BZR_REVISION>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
+
     <distributionManagement>
         <snapshotRepository>
             <id>akiban</id>
@@ -48,6 +88,7 @@
             </releases>
         </repository>
     </repositories>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -56,6 +97,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
     <build>
         <plugins>
             <!-- Compile for Java 6 -->
@@ -144,6 +186,7 @@
                     <xmlOutput>true</xmlOutput>
                 </configuration>
             </plugin>
+            <!-- License checking -->
             <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
