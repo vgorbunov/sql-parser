@@ -1,18 +1,17 @@
 /**
- * Copyright © 2012 Akiban Technologies, Inc.  All rights
- * reserved.
- *
- * This program and the accompanying materials are made available
- * under the terms of the Eclipse Public License v1.0 which
- * accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * This program may also be available under different license terms.
- * For more information, see www.akiban.com or contact
- * licensing@akiban.com.
- *
- * Contributors:
- * Akiban Technologies, Inc.
+ * Copyright 2011-2013 Akiban Technologies, Inc.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /* The original from which this derives bore the following: */
@@ -186,6 +185,13 @@ public class TypeId
     public static final String BLOB_NAME = "BLOB";
     public static final String CLOB_NAME = "CLOB";
     public static final String NCLOB_NAME = "NCLOB";
+    public static final String TEXT_NAME = "TEXT";
+    public static final String TINYBLOB_NAME = "TINYBLOB";
+    public static final String TINYTEXT_NAME = "TINYTEXT";
+    public static final String MEDIUMBLOB_NAME = "MEDIUMBLOB";
+    public static final String MEDIUMTEXT_NAME = "MEDIUMTEXT";
+    public static final String LONGBLOB_NAME = "LONGBLOB";
+    public static final String LONGTEXT_NAME = "LONGTEXT";
     public static final String INTERVAL_YEAR_NAME = "INTERVAL YEAR";
     public static final String INTERVAL_MONTH_NAME = "INTERVAL MONTH";
     public static final String INTERVAL_YEAR_MONTH_NAME = "INTERVAL YEAR TO MONTH";
@@ -343,6 +349,14 @@ public class TypeId
     public static final TypeId DATETIME_ID = new TypeId(FormatIds.TIMESTAMP_TYPE_ID, DATETIME_NAME);
     public static final TypeId YEAR_ID = new TypeId(FormatIds.SMALLINT_TYPE_ID, YEAR_NAME);
 
+    public static final TypeId TEXT_ID = new TypeId(FormatIds.CLOB_TYPE_ID, TEXT_NAME);
+    public static final TypeId TINYBLOB_ID = new TypeId(FormatIds.BLOB_TYPE_ID, TINYBLOB_NAME);
+    public static final TypeId TINYTEXT_ID = new TypeId(FormatIds.CLOB_TYPE_ID, TINYTEXT_NAME);
+    public static final TypeId MEDIUMBLOB_ID = new TypeId(FormatIds.BLOB_TYPE_ID, MEDIUMBLOB_NAME);
+    public static final TypeId MEDIUMTEXT_ID = new TypeId(FormatIds.CLOB_TYPE_ID, MEDIUMTEXT_NAME);
+    public static final TypeId LONGBLOB_ID = new TypeId(FormatIds.BLOB_TYPE_ID, LONGBLOB_NAME);
+    public static final TypeId LONGTEXT_ID = new TypeId(FormatIds.CLOB_TYPE_ID, LONGTEXT_NAME);
+
     private static final TypeId[] ALL_BUILTIN_TYPE_IDS = {
         BOOLEAN_ID,
         SMALLINT_ID,
@@ -391,6 +405,14 @@ public class TypeId
         NUMERIC_UNSIGNED_ID,
         DATETIME_ID,
         YEAR_ID,
+
+        TEXT_ID,
+        TINYBLOB_ID,
+        TINYTEXT_ID,
+        MEDIUMBLOB_ID,
+        MEDIUMTEXT_ID,
+        LONGBLOB_ID,
+        LONGTEXT_ID,
     };
 
     /*
@@ -680,6 +702,27 @@ public class TypeId
         }
         if (SQLTypeName.equals(CLOB_NAME)) {
             return CLOB_ID;
+        }
+        if (SQLTypeName.equals(TEXT_NAME)) {
+            return TEXT_ID;
+        }
+        if (SQLTypeName.equals(TINYBLOB_NAME)) {
+            return TINYBLOB_ID;
+        }
+        if (SQLTypeName.equals(TINYTEXT_NAME)) {
+            return TINYTEXT_ID;
+        }
+        if (SQLTypeName.equals(MEDIUMBLOB_NAME)) {
+            return MEDIUMBLOB_ID;
+        }
+        if (SQLTypeName.equals(MEDIUMTEXT_NAME)) {
+            return MEDIUMTEXT_ID;
+        }
+        if (SQLTypeName.equals(LONGBLOB_NAME)) {
+            return LONGBLOB_ID;
+        }
+        if (SQLTypeName.equals(LONGTEXT_NAME)) {
+            return LONGTEXT_ID;
         }
         if (SQLTypeName.equals(XML_NAME)) {
             return XML_ID;

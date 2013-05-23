@@ -1,17 +1,64 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
     <modelVersion>4.0.0</modelVersion>
+    
+    <!-- Required for deploying to Sonatype -->
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
     <groupId>com.akiban</groupId>
     <artifactId>akiban-sql-parser</artifactId>
+    <version>1.0.16-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <version>1.0.15-SNAPSHOT</version>
-    <name>akiban-sql-parser</name>
-    <url>http://maven.apache.org</url>
+
+    <name>Akiban SQL Parser</name>
+    <description>Production quality Java parser for the SQL language.</description>
+    <url>https://launchpad.net/akiban-sql-parser/</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://code.launchpad.net/akiban-sql-parser</url>
+        <connection>scm:bazaar:https://code.launchpad.net/akiban-sql-parser</connection>
+    </scm>
+
+    <organization>
+        <name>Akiban Technologies, Inc</name>
+        <url>http://www.akiban.com</url>
+    </organization>
+    
+    <developers>
+        <developer>
+            <id>mmcm</id>
+            <name>Mike McMahon</name>
+            <email>mike.mcmahon@akiban.com</email>
+            <organization>Akiban Technologies, Inc.</organization>
+            <organizationUrl>http://www.akiban.com</organizationUrl>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>-5</timezone>
+        </developer>
+    </developers>
+
     <properties>
         <BZR_REVISION></BZR_REVISION>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
+
     <distributionManagement>
       <repository>
       	<id>AlibanLocal</id>
@@ -24,8 +71,6 @@
 	    <url>http://sneezy:8095/nexus/content/repositories/snapshots/</url>
      </snapshotRepository>
     </distributionManagement>
-    <repositories>
-    </repositories>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -34,6 +79,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
     <build>
         <plugins>
             <!-- Compile for Java 6 -->
@@ -101,27 +147,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>maven-clover2-plugin</artifactId>
-                <version>3.0.1</version>
-                <configuration>
-                    <generateHistorical>true</generateHistorical>
-                    <historyDir>/clover/history</historyDir>
-                    <license>${clover.license}</license>
-                    <generateXml>true</generateXml>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>1.2</version>
-                <configuration>
-                    <findbugsXmlOutput>true</findbugsXmlOutput>
-                    <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
-                    <xmlOutput>true</xmlOutput>
-                </configuration>
-            </plugin>
+            <!-- License checking -->
             <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
@@ -131,8 +157,8 @@
                     <headerSections>
                         <headerSection>
                             <key>__YEAR_SECTION__</key>
-                            <defaultValue>2012</defaultValue>
-                            <ensureMatch>20(11)\-2012|2012|2013</ensureMatch>
+                            <defaultValue>2013</defaultValue>
+                            <ensureMatch>20(11|12|13)\-2013|2013</ensureMatch>
                         </headerSection>
                     </headerSections>
                     <strictCheck>true</strictCheck>
