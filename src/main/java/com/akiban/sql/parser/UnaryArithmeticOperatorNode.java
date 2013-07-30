@@ -52,7 +52,7 @@ public class UnaryArithmeticOperatorNode extends UnaryOperatorNode
         PLUS("+", "plus"), 
         MINUS("-", "minus"), 
         SQRT("SQRT", "sqrt"), 
-        ABSOLUTE("ABS/ABSVAL", "absolute");
+        ABSOLUTE("ABS", "absolute");
 
         String operator, methodName;
         OperatorType(String operator, String methodName) {

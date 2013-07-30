@@ -141,6 +141,12 @@ public class NodeToString
             return isNullNode((IsNullNode)node);
         case NodeTypes.IS_NODE:
             return isNode((IsNode)node);
+        case NodeTypes.ABSOLUTE_OPERATOR_NODE:
+        case NodeTypes.SQRT_OPERATOR_NODE:
+            return unaryArithmeticOperatorNode((UnaryArithmeticOperatorNode)node);
+        case NodeTypes.UNARY_PLUS_OPERATOR_NODE:
+        case NodeTypes.UNARY_MINUS_OPERATOR_NODE:
+            return unaryPrefixOperatorNode((UnaryArithmeticOperatorNode)node);
         case NodeTypes.UNARY_DATE_TIMESTAMP_OPERATOR_NODE:
           return unaryDateTimestampOperatorNode((UnaryDateTimestampOperatorNode)node);
         case NodeTypes.LIKE_OPERATOR_NODE:
@@ -758,6 +764,16 @@ public class NodeToString
 
     protected String isNullNode(IsNullNode node) throws StandardException {
         return suffixUnary(node);
+    }
+
+    protected String unaryArithmeticOperatorNode(UnaryArithmeticOperatorNode node) 
+            throws StandardException {
+        return functionUnary(node);
+    }
+
+    protected String unaryPrefixOperatorNode(UnaryArithmeticOperatorNode node) 
+            throws StandardException {
+        return prefixUnary(node);
     }
 
     protected String unaryDateTimestampOperatorNode(UnaryDateTimestampOperatorNode node) 
