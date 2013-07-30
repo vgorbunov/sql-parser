@@ -19,6 +19,7 @@ package com.akiban.sql.unparser;
 import com.akiban.sql.TestBase;
 
 import com.akiban.sql.parser.SQLParser;
+import com.akiban.sql.parser.SQLParserFeature;
 import com.akiban.sql.parser.StatementNode;
 
 import org.junit.Before;
@@ -30,6 +31,7 @@ import org.junit.runner.RunWith;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.EnumSet;
 
 @RunWith(Parameterized.class)
 public class NodeToStringTest extends TestBase implements TestBase.GenerateAndCheckResult
@@ -45,6 +47,7 @@ public class NodeToStringTest extends TestBase implements TestBase.GenerateAndCh
     public void before() throws Exception {
         parser = new SQLParser();
         unparser = new NodeToString();
+        parser.getFeatures().addAll(EnumSet.of(SQLParserFeature.INFIX_BIT_OPERATORS));
     }
 
     @Parameters
