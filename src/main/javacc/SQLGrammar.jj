@@ -9304,6 +9304,11 @@ outerJoinType() throws StandardException :
     {
         return JoinNode.JoinType.RIGHT_OUTER;
     }
+|
+    <FULL> 
+    {
+        return JoinNode.JoinType.FULL_OUTER;
+    }
 }
 
 JoinNode.JoinType
