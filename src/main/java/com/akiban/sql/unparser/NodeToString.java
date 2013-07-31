@@ -131,7 +131,10 @@ public class NodeToString
         case NodeTypes.BINARY_DIVIDE_OPERATOR_NODE:
         case NodeTypes.BINARY_DIV_OPERATOR_NODE:
         case NodeTypes.BINARY_MINUS_OPERATOR_NODE:
+        case NodeTypes.MOD_OPERATOR_NODE:
             return binaryArithmeticOperatorNode((BinaryArithmeticOperatorNode)node);
+        case NodeTypes.BINARY_BIT_OPERATOR_NODE:
+            return binaryBitOperatorNode((BinaryBitOperatorNode)node);
         case NodeTypes.CONCATENATION_OPERATOR_NODE:
             return concatenationOperatorNode((ConcatenationOperatorNode)node);
         case NodeTypes.NOT_NODE:
@@ -141,10 +144,39 @@ public class NodeToString
             return isNullNode((IsNullNode)node);
         case NodeTypes.IS_NODE:
             return isNode((IsNode)node);
+        case NodeTypes.ABSOLUTE_OPERATOR_NODE:
+        case NodeTypes.SQRT_OPERATOR_NODE:
+            return unaryArithmeticOperatorNode((UnaryArithmeticOperatorNode)node);
+        case NodeTypes.UNARY_PLUS_OPERATOR_NODE:
+        case NodeTypes.UNARY_MINUS_OPERATOR_NODE:
+            return unaryPrefixOperatorNode((UnaryArithmeticOperatorNode)node);
+        case NodeTypes.UNARY_BITNOT_OPERATOR_NODE:
+            return unaryBitOperatorNode((UnaryBitOperatorNode)node);
         case NodeTypes.UNARY_DATE_TIMESTAMP_OPERATOR_NODE:
           return unaryDateTimestampOperatorNode((UnaryDateTimestampOperatorNode)node);
+        case NodeTypes.TIMESTAMP_OPERATOR_NODE:
+          return timestampOperatorNode((TimestampOperatorNode)node);
+        case NodeTypes.EXTRACT_OPERATOR_NODE:
+          return extractOperatorNode((ExtractOperatorNode)node);
+        case NodeTypes.CHAR_LENGTH_OPERATOR_NODE:
+          return lengthOperatorNode((LengthOperatorNode)node);
+        case NodeTypes.OCTET_LENGTH_OPERATOR_NODE:
+          return octetLengthOperatorNode((OctetLengthOperatorNode)node);
+        case NodeTypes.RIGHT_FN_NODE:
+        case NodeTypes.LEFT_FN_NODE:
+            return leftRightFuncOperatorNode((LeftRightFuncOperatorNode)node);
+        case NodeTypes.SIMPLE_STRING_OPERATOR_NODE:
+            return simpleStringOperatorNode((SimpleStringOperatorNode)node);
         case NodeTypes.LIKE_OPERATOR_NODE:
             return likeEscapeOperatorNode((LikeEscapeOperatorNode)node);
+        case NodeTypes.LOCATE_FUNCTION_NODE:
+        case NodeTypes.SUBSTRING_OPERATOR_NODE:
+            return ternaryOperatorNode((TernaryOperatorNode)node);
+        case NodeTypes.TIMESTAMP_ADD_FN_NODE:
+        case NodeTypes.TIMESTAMP_DIFF_FN_NODE:
+            return timestampFunctionNode((TernaryOperatorNode)node);
+        case NodeTypes.TRIM_OPERATOR_NODE:
+            return trimOperatorNode((TrimOperatorNode)node);
         case NodeTypes.IN_LIST_OPERATOR_NODE:
             return inListOperatorNode((InListOperatorNode)node);
         case NodeTypes.ROW_CTOR_NODE:
@@ -180,6 +212,8 @@ public class NodeToString
             return constantNode((ConstantNode)node);
         case NodeTypes.PARAMETER_NODE:
             return parameterNode((ParameterNode)node);
+        case NodeTypes.DEFAULT_NODE:
+            return "DEFAULT";
         case NodeTypes.USER_NODE:
             return "USER";
         case NodeTypes.CURRENT_USER_NODE:
@@ -200,6 +234,12 @@ public class NodeToString
             return currentDatetimeOperatorNode((CurrentDatetimeOperatorNode)node);
         case NodeTypes.CAST_NODE:
             return castNode((CastNode)node);
+        case NodeTypes.EXPLICIT_COLLATE_NODE:
+            return explicitCollateNode((ExplicitCollateNode)node);
+        case NodeTypes.NEXT_SEQUENCE_NODE:
+            return nextSequenceNode((NextSequenceNode)node);
+        case NodeTypes.CURRENT_SEQUENCE_NODE:
+            return currentSequenceNode((CurrentSequenceNode)node);
         case NodeTypes.JAVA_TO_SQL_VALUE_NODE:
             return javaToSQLValueNode((JavaToSQLValueNode)node);
         case NodeTypes.SQL_TO_JAVA_VALUE_NODE:
@@ -747,9 +787,24 @@ public class NodeToString
         return infixBinary(node);
     }
 
+    protected String binaryBitOperatorNode(BinaryBitOperatorNode node) 
+            throws StandardException {
+        return infixBinary(node);
+    }
+
     protected String concatenationOperatorNode(ConcatenationOperatorNode node)
             throws StandardException {
         return infixBinary(node);
+    }
+
+    protected String leftRightFuncOperatorNode(LeftRightFuncOperatorNode node)
+            throws StandardException {
+        return functionBinary(node);
+    }
+
+    protected String simpleStringOperatorNode(SimpleStringOperatorNode node)
+            throws StandardException {
+        return functionUnary(node);
     }
 
     protected String notNode(NotNode node) throws StandardException {
@@ -760,7 +815,43 @@ public class NodeToString
         return suffixUnary(node);
     }
 
+    protected String unaryArithmeticOperatorNode(UnaryArithmeticOperatorNode node) 
+            throws StandardException {
+        return functionUnary(node);
+    }
+
+    protected String unaryPrefixOperatorNode(UnaryArithmeticOperatorNode node) 
+            throws StandardException {
+        return prefixUnary(node);
+    }
+
+    protected String unaryBitOperatorNode(UnaryBitOperatorNode node) 
+            throws StandardException {
+        return prefixUnary(node);
+    }
+
+    protected String extractOperatorNode(ExtractOperatorNode node) 
+            throws StandardException {
+        return node.getOperator().substring("EXTRACT ".length()).toUpperCase() + "(" +
+            toString(node.getOperand()) + ")";
+    }
+
     protected String unaryDateTimestampOperatorNode(UnaryDateTimestampOperatorNode node) 
+            throws StandardException {
+        return functionUnary(node);
+    }
+
+    protected String timestampOperatorNode(TimestampOperatorNode node) 
+            throws StandardException {
+        return functionBinary(node);
+    }
+
+    protected String lengthOperatorNode(LengthOperatorNode node) 
+            throws StandardException {
+        return functionUnary(node);
+    }
+
+    protected String octetLengthOperatorNode(OctetLengthOperatorNode node) 
             throws StandardException {
         return functionUnary(node);
     }
@@ -798,6 +889,81 @@ public class NodeToString
         if (node.getRightOperand() != null)
             like += " ESCAPE " + maybeParens(node.getRightOperand());
         return like;
+    }
+
+    protected String ternaryOperatorNode(TernaryOperatorNode node)
+            throws StandardException {
+        StringBuilder str = new StringBuilder(node.getOperator().toUpperCase());
+        str.append("(");
+        str.append(toString(node.getReceiver()));
+        str.append(", ");
+        str.append(toString(node.getLeftOperand()));
+        if (node.getRightOperand() != null) {
+            str.append(", ");
+            str.append(toString(node.getRightOperand()));
+        }
+        return str.toString();
+    }
+
+    protected String timestampFunctionNode(TernaryOperatorNode node)
+            throws StandardException {
+        String interval = toString(node.getReceiver());
+        switch ((Integer)((ConstantNode)node.getReceiver()).getValue()) {
+        case TernaryOperatorNode.YEAR_INTERVAL:
+            interval = "YEAR";
+            break;
+        case TernaryOperatorNode.QUARTER_INTERVAL:
+            interval = "QUARTER";
+            break;
+        case TernaryOperatorNode.MONTH_INTERVAL:
+            interval = "MONTH";
+            break;
+        case TernaryOperatorNode.WEEK_INTERVAL:
+            interval = "WEEK";
+            break;
+        case TernaryOperatorNode.DAY_INTERVAL:
+            interval = "DAY";
+            break;
+        case TernaryOperatorNode.HOUR_INTERVAL:
+            interval = "HOUR";
+            break;
+        case TernaryOperatorNode.MINUTE_INTERVAL:
+            interval = "MINUTE";
+            break;
+        case TernaryOperatorNode.SECOND_INTERVAL:
+            interval = "SECOND";
+            break;
+        case TernaryOperatorNode.FRAC_SECOND_INTERVAL:
+            interval = "MICROSECOND>";
+            break;
+        }
+        return node.getOperator().toUpperCase() + "(" +
+            interval + ", " +
+            toString(node.getLeftOperand()) + ", " +
+            toString(node.getRightOperand()) + ")";
+    }
+
+    protected String trimOperatorNode(TrimOperatorNode node)
+            throws StandardException {
+        if ((node.getRightOperand() instanceof ConstantNode) &&
+            " ".equals(((ConstantNode)node.getRightOperand()).getValue())) {
+            return node.getOperator().toUpperCase() + "(" +
+                toString(node.getLeftOperand()) + ")";
+        }
+        else {
+            StringBuilder str = new StringBuilder("TRIM(");
+            if ("LTRIM".equals(node.getOperator()))
+                str.append("LEADING");
+            else if ("RTRIM".equals(node.getOperator()))
+                str.append("TRAILING");
+            else
+                str.append("BOTH");
+            str.append(" ");
+            str.append(toString(node.getRightOperand()));
+            str.append(" FROM ");
+            str.append(toString(node.getLeftOperand()));
+            return str.toString();
+        }
     }
 
     protected String inListOperatorNode(InListOperatorNode node) throws StandardException {
@@ -880,6 +1046,12 @@ public class NodeToString
             maybeParens(node.getRightOperand());
     }
     
+    protected String functionBinary(BinaryOperatorNode node) throws StandardException {
+        return node.getOperator().toUpperCase() + "(" +
+            toString(node.getLeftOperand()) + ", " +
+            toString(node.getRightOperand()) + ")";
+    }
+    
     protected String functionCall(String functionName, ValueNodeList args)
             throws StandardException {
         return functionName + "(" + nodeList(args, true) + ")";
@@ -944,6 +1116,22 @@ public class NodeToString
     protected String castNode(CastNode node) throws StandardException {
         return "CAST(" + toString(node.getCastOperand()) + 
             " AS " + node.getType().toString() + ")";
+    }
+
+    protected String explicitCollateNode(ExplicitCollateNode node) 
+            throws StandardException {
+        return maybeParens(node.getOperand()) + 
+            " COLLATE " + node.getCollation();
+    }
+
+    protected String nextSequenceNode(NextSequenceNode node)
+            throws StandardException {
+        return "NEXT VALUE FOR " + toString(node.getSequenceName ());
+    }
+
+    protected String currentSequenceNode(CurrentSequenceNode node)
+            throws StandardException {
+        return "CURRENT VALUE FOR " + toString(node.getSequenceName ());
     }
 
     protected String javaToSQLValueNode(JavaToSQLValueNode node) 

@@ -36,11 +36,11 @@ public class LeftRightFuncOperatorNode extends BinaryOperatorNode
         switch(nodeType)
         {
             case NodeTypes.LEFT_FN_NODE:
-                op = "getLeft";
+                op = "LEFT";
                 method = "getLeft";
                 break;
             case NodeTypes.RIGHT_FN_NODE:
-                op = "getRight";
+                op = "RIGHT";
                 method = "getRight";
                 break;
             default:

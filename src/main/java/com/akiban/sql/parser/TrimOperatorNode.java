@@ -31,7 +31,7 @@ public class TrimOperatorNode extends BinaryOperatorNode
             case TRIM:
             case RTRIM:  super.init(trimSource,
                                     trimChar,
-                                    "TRIM",
+                                    optype.name(),
                                     optype.name().toLowerCase(),
                                     ValueClassName.StringDataValue,
                                     ValueClassName.StringDataValue);
