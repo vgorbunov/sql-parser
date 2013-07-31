@@ -60,6 +60,10 @@ public final class AggregateWindowFunctionNode extends WindowFunctionNode
         aggregateFunction = (AggregateNode)arg2;
     }
 
+    public AggregateNode getAggregateFunction() {
+        return aggregateFunction;
+    }
+
     /**
      * Fill this node with a deep copy of the given node.
      */

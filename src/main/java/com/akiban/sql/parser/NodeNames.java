@@ -277,6 +277,10 @@ public interface NodeNames
 
     static final String PARAMETER_NODE_NAME = "com.akiban.sql.parser.ParameterNode";
 
+    static final String PARTITION_BY_COLUMN_NAME = "com.akiban.sql.parser.PartitionByColumn";
+
+    static final String PARTITION_BY_LIST_NAME = "com.akiban.sql.parser.PartitionByList";
+
     static final String PREDICATE_LIST_NAME = "com.akiban.sql.parser.PredicateList";
 
     static final String PREDICATE_NAME = "com.akiban.sql.parser.Predicate";

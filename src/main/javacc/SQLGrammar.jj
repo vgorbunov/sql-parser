@@ -2197,6 +2197,7 @@ TOKEN [IGNORE_CASE] :
 | <OVERLAPS: "overlaps">
 | <PAD: "pad">
 | <PARTIAL: "partial">
+| <PARTITION: "partition">
 | <PREPARE: "prepare">
 | <PRESERVE: "preserve">
 | <PRIMARY: "primary">
@@ -9548,16 +9549,21 @@ QueryTreeNode
 overClause() throws StandardException :
 {
     String windowRef;
+    PartitionByList partitionCols = null;
     OrderByList orderCols = null;
 }
 {
     LOOKAHEAD( { getToken(2).kind == LEFT_PAREN || getToken(2).kind == IDENTIFIER } )
     <OVER>
     ( 
-        <LEFT_PAREN> [ orderCols = orderByClause() ] <RIGHT_PAREN>
+        <LEFT_PAREN>
+        [ partitionCols = partitionByClause() ] 
+        [ orderCols = orderByClause() ] 
+        <RIGHT_PAREN>
     {
         return (QueryTreeNode)nodeFactory.getNode(NodeTypes.WINDOW_DEFINITION_NODE,
                                                   null,
+                                                  partitionCols,
                                                   orderCols,
                                                   parserContext);
     }
@@ -9569,6 +9575,44 @@ overClause() throws StandardException :
                                                    parserContext);
     }
  )
+}
+
+PartitionByList
+partitionByClause() throws StandardException :
+{
+    PartitionByList partitionByList = (PartitionByList)nodeFactory.getNode(NodeTypes.PARTITION_BY_LIST,
+                                                                       parserContext);
+}
+{
+    <PARTITION> <BY>
+    windowPartitionColumnReference(partitionByList)
+    ( <COMMA> windowPartitionColumnReference(partitionByList) )*
+    {
+        return partitionByList;
+    }
+}
+
+void
+windowPartitionColumnReference(PartitionByList partitionByList) throws StandardException :
+{
+    ColumnReference column;
+    String collation = null; 
+}
+{
+    column = columnReference()
+    [ collation = collateClause() ]
+    {
+        ValueNode partitionColumn = column;
+        if (collation != null)
+            partitionColumn = (ValueNode)nodeFactory.getNode(NodeTypes.EXPLICIT_COLLATE_NODE,
+                                                             partitionColumn,
+                                                             collation,
+                                                             parserContext);
+        PartitionByColumn partitionBy = (PartitionByColumn)nodeFactory.getNode(NodeTypes.PARTITION_BY_COLUMN,
+                                                                               partitionColumn,
+                                                                               parserContext);
+        partitionByList.add(partitionBy);
+    }
 }
 
 ValueNode
@@ -9941,15 +9985,20 @@ WindowList
 windowDefinition(WindowList wl) throws StandardException :
 {
     String windowName;
+    PartitionByList partitionCols = null;
     OrderByList orderCols = null;
 }
 {
     windowName = identifier()
-    <AS> <LEFT_PAREN> [ orderCols = orderByClause() ] <RIGHT_PAREN>
+    <AS> <LEFT_PAREN>
+    [ partitionCols = partitionByClause() ] 
+    [ orderCols = orderByClause() ] 
+    <RIGHT_PAREN>
     {
         wl.addWindow(
             (WindowDefinitionNode)nodeFactory.getNode(NodeTypes.WINDOW_DEFINITION_NODE,
                                                       windowName,
+                                                      partitionCols,
                                                       orderCols,
                                                       parserContext));
 
@@ -14740,6 +14789,7 @@ reservedKeyword() :
 | tok = <OVERLAPS>
 | tok = <PAD>
 | tok = <PARTIAL>
+| tok = <PARTITION>
 | tok = <PREPARE>
 | tok = <PRESERVE>
 | tok = <PRIMARY>
