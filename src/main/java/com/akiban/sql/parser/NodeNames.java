@@ -197,6 +197,8 @@ public interface NodeNames
 
     static final String FROM_VTI_NAME = "com.akiban.sql.parser.FromVTI";
 
+    static final String FULL_OUTER_JOIN_NODE_NAME = "com.akiban.sql.parser.FullOuterJoinNode";
+
     static final String GENERATION_CLAUSE_NODE_NAME = "com.akiban.sql.parser.GenerationClauseNode";
 
     static final String GET_CURRENT_CONNECTION_NODE_NAME = "com.akiban.sql.parser.GetCurrentConnectionNode";

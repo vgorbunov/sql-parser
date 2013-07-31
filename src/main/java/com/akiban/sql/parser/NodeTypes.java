@@ -219,7 +219,8 @@ public interface NodeTypes
     public static final int AT_RENAME_COLUMN_NODE = 169;
     public static final int PARTITION_BY_LIST = 171;
     public static final int PARTITION_BY_COLUMN = 172;
-    // 173 - 182 available
+    public static final int FULL_OUTER_JOIN_NODE = 173;
+    // 174 - 182 available
     public static final int ALTER_SERVER_NODE = 183;
     public static final int TIMESTAMP_ADD_FN_NODE = 184;
     public static final int TIMESTAMP_DIFF_FN_NODE = 185;

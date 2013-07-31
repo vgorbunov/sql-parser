@@ -811,6 +811,7 @@ class SQLGrammar
      *  CROSS JOIN
      *  LEFT OUTER JOIN
      *  RIGHT OUTER JOIN
+     *  FULL OUTER JOIN
      *  NATURAL [ { RIGHT | LEFT } [ OUTER ] | INNER ] JOIN
      *
      * @return TRUE iff the next set of tokens is the beginning of a joinedTableExpression().
@@ -833,12 +834,12 @@ class SQLGrammar
         else if (tokKind1 == NATURAL) {
             retval = true;
         }
-        else if ((tokKind1 == LEFT || tokKind1 == RIGHT) && tokKind2 == OUTER) {
+        else if ((tokKind1 == LEFT || tokKind1 == RIGHT || tokKind1 == FULL) && tokKind2 == OUTER) {
             if (getToken(3).kind == JOIN) {
                 retval = true;
             }
         }
-        else if ((tokKind1 == LEFT || tokKind1 == RIGHT) && tokKind2 == JOIN) {
+        else if ((tokKind1 == LEFT || tokKind1 == RIGHT || tokKind1 == FULL) && tokKind2 == JOIN) {
             retval = true;
         }
         else if (hasFeature(SQLParserFeature.MYSQL_HINTS) && tokKind1 == STRAIGHT_JOIN) {
@@ -1546,6 +1547,15 @@ class SQLGrammar
                                                  onClause,
                                                  usingClause,
                                                  Boolean.TRUE,
+                                                 null,
+                                                 parserContext);
+
+        case FULL_OUTER:
+            return (JoinNode)nodeFactory.getNode(NodeTypes.FULL_OUTER_JOIN_NODE,
+                                                 leftRSN,
+                                                 rightRSN,
+                                                 onClause,
+                                                 usingClause,
                                                  null,
                                                  parserContext);
 

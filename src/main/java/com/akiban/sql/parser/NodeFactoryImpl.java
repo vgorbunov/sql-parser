@@ -480,6 +480,9 @@ public final class NodeFactoryImpl extends NodeFactory
         case NodeTypes.HALF_OUTER_JOIN_NODE:
             return NodeNames.HALF_OUTER_JOIN_NODE_NAME;
 
+        case NodeTypes.FULL_OUTER_JOIN_NODE:
+            return NodeNames.FULL_OUTER_JOIN_NODE_NAME;
+
         case NodeTypes.EXPLICIT_COLLATE_NODE:
             return NodeNames.EXPLICIT_COLLATE_NODE_NAME;
 

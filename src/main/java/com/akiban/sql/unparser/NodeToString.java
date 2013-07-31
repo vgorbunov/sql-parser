@@ -87,6 +87,7 @@ public class NodeToString
             return fromList((FromList)node);
         case NodeTypes.JOIN_NODE:
         case NodeTypes.HALF_OUTER_JOIN_NODE:
+        case NodeTypes.FULL_OUTER_JOIN_NODE:
             return joinNode((JoinNode)node);
         case NodeTypes.UNION_NODE:
             return unionNode((UnionNode)node);
@@ -736,6 +737,8 @@ public class NodeToString
         if (node instanceof HalfOuterJoinNode)
             joinType = ((HalfOuterJoinNode)node).isRightOuterJoin() ? 
                 JoinNode.JoinType.RIGHT_OUTER : JoinNode.JoinType.LEFT_OUTER;
+        else if (node instanceof FullOuterJoinNode)
+            joinType = JoinNode.JoinType.FULL_OUTER;
         str.append(' ');
         if (node.isNaturalJoin())
             str.append("NATURAL ");
