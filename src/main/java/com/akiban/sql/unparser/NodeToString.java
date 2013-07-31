@@ -841,7 +841,8 @@ public class NodeToString
 
     protected String rowNumberFunctionNode(RowNumberFunctionNode node)
             throws StandardException {
-        return node.getOperator().toUpperCase() + "()";
+        return node.getOperator().toUpperCase() + "()" +
+            " OVER " + toString(node.getWindow());
     }
 
     protected String binaryLogicalOperatorNode(BinaryLogicalOperatorNode node) 
