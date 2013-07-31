@@ -510,6 +510,12 @@ public class NodeToString
         if (node.getOrderByList() != null) {
             result += " " + toString(node.getOrderByList());
         }
+        if (node.getFetchFirstClause() != null) {
+            result += " LIMIT " + toString(node.getFetchFirstClause());
+        }
+        if (node.getOffsetClause() != null) {
+            result += " OFFSET " + toString(node.getOffsetClause());
+        }
         return result;
     }
 
