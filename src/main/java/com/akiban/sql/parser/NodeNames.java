@@ -197,6 +197,8 @@ public interface NodeNames
 
     static final String FROM_VTI_NAME = "com.akiban.sql.parser.FromVTI";
 
+    static final String FULL_OUTER_JOIN_NODE_NAME = "com.akiban.sql.parser.FullOuterJoinNode";
+
     static final String GENERATION_CLAUSE_NODE_NAME = "com.akiban.sql.parser.GenerationClauseNode";
 
     static final String GET_CURRENT_CONNECTION_NODE_NAME = "com.akiban.sql.parser.GetCurrentConnectionNode";
@@ -276,6 +278,10 @@ public interface NodeNames
     static final String ORDER_BY_NODE_NAME = "com.akiban.sql.parser.OrderByNode";
 
     static final String PARAMETER_NODE_NAME = "com.akiban.sql.parser.ParameterNode";
+
+    static final String PARTITION_BY_COLUMN_NAME = "com.akiban.sql.parser.PartitionByColumn";
+
+    static final String PARTITION_BY_LIST_NAME = "com.akiban.sql.parser.PartitionByList";
 
     static final String PREDICATE_LIST_NAME = "com.akiban.sql.parser.PredicateList";
 

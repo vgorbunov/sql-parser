@@ -811,6 +811,7 @@ class SQLGrammar
      *  CROSS JOIN
      *  LEFT OUTER JOIN
      *  RIGHT OUTER JOIN
+     *  FULL OUTER JOIN
      *  NATURAL [ { RIGHT | LEFT } [ OUTER ] | INNER ] JOIN
      *
      * @return TRUE iff the next set of tokens is the beginning of a joinedTableExpression().
@@ -833,12 +834,12 @@ class SQLGrammar
         else if (tokKind1 == NATURAL) {
             retval = true;
         }
-        else if ((tokKind1 == LEFT || tokKind1 == RIGHT) && tokKind2 == OUTER) {
+        else if ((tokKind1 == LEFT || tokKind1 == RIGHT || tokKind1 == FULL) && tokKind2 == OUTER) {
             if (getToken(3).kind == JOIN) {
                 retval = true;
             }
         }
-        else if ((tokKind1 == LEFT || tokKind1 == RIGHT) && tokKind2 == JOIN) {
+        else if ((tokKind1 == LEFT || tokKind1 == RIGHT || tokKind1 == FULL) && tokKind2 == JOIN) {
             retval = true;
         }
         else if (hasFeature(SQLParserFeature.MYSQL_HINTS) && tokKind1 == STRAIGHT_JOIN) {
@@ -1549,6 +1550,15 @@ class SQLGrammar
                                                  null,
                                                  parserContext);
 
+        case FULL_OUTER:
+            return (JoinNode)nodeFactory.getNode(NodeTypes.FULL_OUTER_JOIN_NODE,
+                                                 leftRSN,
+                                                 rightRSN,
+                                                 onClause,
+                                                 usingClause,
+                                                 null,
+                                                 parserContext);
+
         case STRAIGHT:
             {
                 Properties joinOrderStrategyProperties = new Properties();
@@ -2197,6 +2207,7 @@ TOKEN [IGNORE_CASE] :
 | <OVERLAPS: "overlaps">
 | <PAD: "pad">
 | <PARTIAL: "partial">
+| <PARTITION: "partition">
 | <PREPARE: "prepare">
 | <PRESERVE: "preserve">
 | <PRIMARY: "primary">
@@ -9304,6 +9315,11 @@ outerJoinType() throws StandardException :
     {
         return JoinNode.JoinType.RIGHT_OUTER;
     }
+|
+    <FULL> 
+    {
+        return JoinNode.JoinType.FULL_OUTER;
+    }
 }
 
 JoinNode.JoinType
@@ -9543,16 +9559,21 @@ QueryTreeNode
 overClause() throws StandardException :
 {
     String windowRef;
+    PartitionByList partitionCols = null;
     OrderByList orderCols = null;
 }
 {
     LOOKAHEAD( { getToken(2).kind == LEFT_PAREN || getToken(2).kind == IDENTIFIER } )
     <OVER>
     ( 
-        <LEFT_PAREN> [ orderCols = orderByClause() ] <RIGHT_PAREN>
+        <LEFT_PAREN>
+        [ partitionCols = partitionByClause() ] 
+        [ orderCols = orderByClause() ] 
+        <RIGHT_PAREN>
     {
         return (QueryTreeNode)nodeFactory.getNode(NodeTypes.WINDOW_DEFINITION_NODE,
                                                   null,
+                                                  partitionCols,
                                                   orderCols,
                                                   parserContext);
     }
@@ -9564,6 +9585,44 @@ overClause() throws StandardException :
                                                    parserContext);
     }
  )
+}
+
+PartitionByList
+partitionByClause() throws StandardException :
+{
+    PartitionByList partitionByList = (PartitionByList)nodeFactory.getNode(NodeTypes.PARTITION_BY_LIST,
+                                                                       parserContext);
+}
+{
+    <PARTITION> <BY>
+    windowPartitionColumnReference(partitionByList)
+    ( <COMMA> windowPartitionColumnReference(partitionByList) )*
+    {
+        return partitionByList;
+    }
+}
+
+void
+windowPartitionColumnReference(PartitionByList partitionByList) throws StandardException :
+{
+    ColumnReference column;
+    String collation = null; 
+}
+{
+    column = columnReference()
+    [ collation = collateClause() ]
+    {
+        ValueNode partitionColumn = column;
+        if (collation != null)
+            partitionColumn = (ValueNode)nodeFactory.getNode(NodeTypes.EXPLICIT_COLLATE_NODE,
+                                                             partitionColumn,
+                                                             collation,
+                                                             parserContext);
+        PartitionByColumn partitionBy = (PartitionByColumn)nodeFactory.getNode(NodeTypes.PARTITION_BY_COLUMN,
+                                                                               partitionColumn,
+                                                                               parserContext);
+        partitionByList.add(partitionBy);
+    }
 }
 
 ValueNode
@@ -9936,15 +9995,20 @@ WindowList
 windowDefinition(WindowList wl) throws StandardException :
 {
     String windowName;
+    PartitionByList partitionCols = null;
     OrderByList orderCols = null;
 }
 {
     windowName = identifier()
-    <AS> <LEFT_PAREN> [ orderCols = orderByClause() ] <RIGHT_PAREN>
+    <AS> <LEFT_PAREN>
+    [ partitionCols = partitionByClause() ] 
+    [ orderCols = orderByClause() ] 
+    <RIGHT_PAREN>
     {
         wl.addWindow(
             (WindowDefinitionNode)nodeFactory.getNode(NodeTypes.WINDOW_DEFINITION_NODE,
                                                       windowName,
+                                                      partitionCols,
                                                       orderCols,
                                                       parserContext));
 
@@ -14735,6 +14799,7 @@ reservedKeyword() :
 | tok = <OVERLAPS>
 | tok = <PAD>
 | tok = <PARTIAL>
+| tok = <PARTITION>
 | tok = <PREPARE>
 | tok = <PRESERVE>
 | tok = <PRIMARY>

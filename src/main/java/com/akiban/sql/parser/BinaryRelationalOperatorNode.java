@@ -51,14 +51,14 @@ public class BinaryRelationalOperatorNode extends BinaryComparisonOperatorNode
 {
     // TODO: Is there any point to this?
 
-    public final int EQUALS_RELOP = 1;
-    public final int NOT_EQUALS_RELOP = 2;
-    public final int GREATER_THAN_RELOP = 3;
-    public final int GREATER_EQUALS_RELOP = 4;
-    public final int LESS_THAN_RELOP = 5;
-    public final int LESS_EQUALS_RELOP = 6;
-    public final int IS_NULL_RELOP = 7;
-    public final int IS_NOT_NULL_RELOP = 8;
+    public static final int EQUALS_RELOP = 1;
+    public static final int NOT_EQUALS_RELOP = 2;
+    public static final int GREATER_THAN_RELOP = 3;
+    public static final int GREATER_EQUALS_RELOP = 4;
+    public static final int LESS_THAN_RELOP = 5;
+    public static final int LESS_EQUALS_RELOP = 6;
+    public static final int IS_NULL_RELOP = 7;
+    public static final int IS_NOT_NULL_RELOP = 8;
 
     private int operatorType;
 

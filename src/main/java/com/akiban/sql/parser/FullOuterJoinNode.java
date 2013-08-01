@@ -17,7 +17,8 @@
 /* The original from which this derives bore the following: */
 
 /*
-   Derby - Class org.apache.derby.impl.sql.compile.AggregateWindowFunctionNode
+
+   Derby - Class org.apache.derby.impl.sql.compile.HalfOuterJoinNode
 
    Licensed to the Apache Software Foundation (ASF) under one or more
    contributor license agreements.  See the NOTICE file distributed with
@@ -41,50 +42,35 @@ package com.akiban.sql.parser;
 import com.akiban.sql.StandardException;
 
 /**
- * Represents aggregate function calls on a window
+ * An FullOuterJoinNode represents a full outer join result set.
  */
-public final class AggregateWindowFunctionNode extends WindowFunctionNode
+
+public class FullOuterJoinNode extends JoinNode
 {
-    private AggregateNode aggregateFunction;
-
     /**
-     * Initializer. QueryTreeNode override.
+     * Initializer for a FullOuterJoinNode.
      *
-     * @param arg1 The window definition or reference
-     * @param arg2 aggregate function node
+     * @param leftResult The ResultSetNode on the left side of this join
+     * @param rightResult The ResultSetNode on the right side of this join
+     * @param onClause The ON clause
+     * @param usingClause The USING clause
+     * @param tableProperties Properties list associated with the table
      *
-     * @exception StandardException
-     */
-    public void init(Object arg1, Object arg2) throws StandardException {
-        super.init(null, "?", arg1);
-        aggregateFunction = (AggregateNode)arg2;
-    }
-
-    public AggregateNode getAggregateFunction() {
-        return aggregateFunction;
-    }
-
-    /**
-     * Fill this node with a deep copy of the given node.
-     */
-    public void copyFrom(QueryTreeNode node) throws StandardException {
-        super.copyFrom(node);
-        
-        AggregateWindowFunctionNode other = (AggregateWindowFunctionNode)node;
-        aggregateFunction = (AggregateNode)getNodeFactory().copyNode(other.aggregateFunction,
-                                                                     getParserContext());
-    }
-
-    /**
-     * QueryTreeNode override. Prints the sub-nodes of this object.
-     * @see QueryTreeNode#printSubNodes
-     *
-     * @param depth         The depth of this node in the tree
+     * @exception StandardException Thrown on error
      */
 
-    public void printSubNodes(int depth) {
-        super.printSubNodes(depth);
-        printLabel(depth, "aggregate: ");
-        aggregateFunction.treePrint(depth + 1);
+    public void init(Object leftResult,
+                     Object rightResult,
+                     Object onClause,
+                     Object usingClause,
+                     Object tableProperties)
+            throws StandardException {
+        super.init(leftResult,
+                   rightResult,
+                   onClause,
+                   usingClause,
+                   null,
+                   tableProperties,
+                   null);
     }
 }
