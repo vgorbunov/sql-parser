@@ -52,6 +52,12 @@ public final class WindowDefinitionNode extends WindowNode
     private boolean inlined;
 
     /**
+     * The partition by list if the window definition contains a <window partition
+     * clause>, else null.
+     */
+    private PartitionByList partitionByList;
+
+    /**
      * The order by list if the window definition contains a <window order
      * clause>, else null.
      */
@@ -61,13 +67,15 @@ public final class WindowDefinitionNode extends WindowNode
      * Initializer.
      *
      * @param arg1 The window name, null if in-lined definition
-     * @param arg2 ORDER BY list
+     * @param arg2 PARTITION BY list
+     * @param arg3 ORDER BY list
      * @exception StandardException
      */
-    public void init(Object arg1, Object arg2) throws StandardException {
+    public void init(Object arg1, Object arg2, Object arg3) throws StandardException {
         String name = (String)arg1;
 
-        orderByList = (OrderByList)arg2;
+        partitionByList = (PartitionByList)arg2;
+        orderByList = (OrderByList)arg3;
 
         if (name != null) {
             super.init(arg1);
@@ -76,10 +84,6 @@ public final class WindowDefinitionNode extends WindowNode
         else {
             super.init("IN-LINE");
             inlined = true;
-        }
-
-        if (orderByList != null) {
-            throw new StandardException("Not implemented: WINDOW/ORDER BY");
         }
     }
 
@@ -91,6 +95,8 @@ public final class WindowDefinitionNode extends WindowNode
 
         WindowDefinitionNode other = (WindowDefinitionNode)node;
         this.inlined = other.inlined;
+        this.partitionByList = (PartitionByList)getNodeFactory().copyNode(other.partitionByList,
+                                                                          getParserContext());
         this.orderByList = (OrderByList)getNodeFactory().copyNode(other.orderByList,
                                                                   getParserContext());
     }
@@ -115,6 +121,10 @@ public final class WindowDefinitionNode extends WindowNode
     public void printSubNodes(int depth) {
         super.printSubNodes(depth);
 
+        if (partitionByList != null) {
+            printLabel(depth, "partitionByList: ");
+            partitionByList.treePrint(depth + 1);
+        }
         if (orderByList != null) {
             printLabel(depth, "orderByList: ");
             orderByList.treePrint(depth + 1);
@@ -143,7 +153,8 @@ public final class WindowDefinitionNode extends WindowNode
      * more than one window then.
      */
     private boolean isEquivalent(WindowDefinitionNode other) {
-        if (orderByList == null && other.getOrderByList() == null) {
+        if (orderByList == null && other.getOrderByList() == null &&
+            partitionByList == null && other.getPartitionByList() == null) {
             return true;
         }
 
@@ -152,10 +163,24 @@ public final class WindowDefinitionNode extends WindowNode
     }
 
     /**
+     * @return whether this definition is inline
+     */
+    public boolean isInline() {
+        return inlined;
+    }
+
+    /**
      * @return the order by list of this window definition if any, else null.
      */
     public OrderByList getOrderByList() {
         return orderByList;
+    }
+
+    /**
+     * @return the partition by list of this window definition if any, else null.
+     */
+    public PartitionByList getPartitionByList() {
+        return partitionByList;
     }
 
 }

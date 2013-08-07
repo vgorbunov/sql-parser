@@ -811,6 +811,7 @@ class SQLGrammar
      *  CROSS JOIN
      *  LEFT OUTER JOIN
      *  RIGHT OUTER JOIN
+     *  FULL OUTER JOIN
      *  NATURAL [ { RIGHT | LEFT } [ OUTER ] | INNER ] JOIN
      *
      * @return TRUE iff the next set of tokens is the beginning of a joinedTableExpression().
@@ -833,12 +834,12 @@ class SQLGrammar
         else if (tokKind1 == NATURAL) {
             retval = true;
         }
-        else if ((tokKind1 == LEFT || tokKind1 == RIGHT) && tokKind2 == OUTER) {
+        else if ((tokKind1 == LEFT || tokKind1 == RIGHT || tokKind1 == FULL) && tokKind2 == OUTER) {
             if (getToken(3).kind == JOIN) {
                 retval = true;
             }
         }
-        else if ((tokKind1 == LEFT || tokKind1 == RIGHT) && tokKind2 == JOIN) {
+        else if ((tokKind1 == LEFT || tokKind1 == RIGHT || tokKind1 == FULL) && tokKind2 == JOIN) {
             retval = true;
         }
         else if (hasFeature(SQLParserFeature.MYSQL_HINTS) && tokKind1 == STRAIGHT_JOIN) {
@@ -1549,6 +1550,15 @@ class SQLGrammar
                                                  null,
                                                  parserContext);
 
+        case FULL_OUTER:
+            return (JoinNode)nodeFactory.getNode(NodeTypes.FULL_OUTER_JOIN_NODE,
+                                                 leftRSN,
+                                                 rightRSN,
+                                                 onClause,
+                                                 usingClause,
+                                                 null,
+                                                 parserContext);
+
         case STRAIGHT:
             {
                 Properties joinOrderStrategyProperties = new Properties();
@@ -2197,6 +2207,7 @@ TOKEN [IGNORE_CASE] :
 | <OVERLAPS: "overlaps">
 | <PAD: "pad">
 | <PARTIAL: "partial">
+| <PARTITION: "partition">
 | <PREPARE: "prepare">
 | <PRESERVE: "preserve">
 | <PRIMARY: "primary">
@@ -9304,6 +9315,11 @@ outerJoinType() throws StandardException :
     {
         return JoinNode.JoinType.RIGHT_OUTER;
     }
+|
+    <FULL> 
+    {
+        return JoinNode.JoinType.FULL_OUTER;
+    }
 }
 
 JoinNode.JoinType
@@ -9543,16 +9559,21 @@ QueryTreeNode
 overClause() throws StandardException :
 {
     String windowRef;
+    PartitionByList partitionCols = null;
     OrderByList orderCols = null;
 }
 {
     LOOKAHEAD( { getToken(2).kind == LEFT_PAREN || getToken(2).kind == IDENTIFIER } )
     <OVER>
     ( 
-        <LEFT_PAREN> [ orderCols = orderByClause() ] <RIGHT_PAREN>
+        <LEFT_PAREN>
+        [ partitionCols = partitionByClause() ] 
+        [ orderCols = orderByClause() ] 
+        <RIGHT_PAREN>
     {
         return (QueryTreeNode)nodeFactory.getNode(NodeTypes.WINDOW_DEFINITION_NODE,
                                                   null,
+                                                  partitionCols,
                                                   orderCols,
                                                   parserContext);
     }
@@ -9564,6 +9585,44 @@ overClause() throws StandardException :
                                                    parserContext);
     }
  )
+}
+
+PartitionByList
+partitionByClause() throws StandardException :
+{
+    PartitionByList partitionByList = (PartitionByList)nodeFactory.getNode(NodeTypes.PARTITION_BY_LIST,
+                                                                       parserContext);
+}
+{
+    <PARTITION> <BY>
+    windowPartitionColumnReference(partitionByList)
+    ( <COMMA> windowPartitionColumnReference(partitionByList) )*
+    {
+        return partitionByList;
+    }
+}
+
+void
+windowPartitionColumnReference(PartitionByList partitionByList) throws StandardException :
+{
+    ColumnReference column;
+    String collation = null; 
+}
+{
+    column = columnReference()
+    [ collation = collateClause() ]
+    {
+        ValueNode partitionColumn = column;
+        if (collation != null)
+            partitionColumn = (ValueNode)nodeFactory.getNode(NodeTypes.EXPLICIT_COLLATE_NODE,
+                                                             partitionColumn,
+                                                             collation,
+                                                             parserContext);
+        PartitionByColumn partitionBy = (PartitionByColumn)nodeFactory.getNode(NodeTypes.PARTITION_BY_COLUMN,
+                                                                               partitionColumn,
+                                                                               parserContext);
+        partitionByList.add(partitionBy);
+    }
 }
 
 ValueNode
@@ -9936,15 +9995,20 @@ WindowList
 windowDefinition(WindowList wl) throws StandardException :
 {
     String windowName;
+    PartitionByList partitionCols = null;
     OrderByList orderCols = null;
 }
 {
     windowName = identifier()
-    <AS> <LEFT_PAREN> [ orderCols = orderByClause() ] <RIGHT_PAREN>
+    <AS> <LEFT_PAREN>
+    [ partitionCols = partitionByClause() ] 
+    [ orderCols = orderByClause() ] 
+    <RIGHT_PAREN>
     {
         wl.addWindow(
             (WindowDefinitionNode)nodeFactory.getNode(NodeTypes.WINDOW_DEFINITION_NODE,
                                                       windowName,
+                                                      partitionCols,
                                                       orderCols,
                                                       parserContext));
 
@@ -14665,8 +14729,6 @@ reservedKeyword() :
 | tok = <ANY>
 | tok = <ARE>
 | tok = <AS>
-| tok = <ASC>
-| tok = <ASSERTION>
 | tok = <AT>
 | tok = <AUTHORIZATION>
 | tok = <AVG>
@@ -14675,24 +14737,20 @@ reservedKeyword() :
 | tok = <BIT>
 | tok = <BOTH>
 | tok = <BY>
-| tok = <CASCADE>
 | tok = <CASCADED>
 | tok = <CASE>
 | tok = <CAST>
 | tok = <CHAR>
-| tok = <CHARACTER>
 | tok = <CHARACTER_LENGTH>
 | tok = <CHAR_LENGTH>
 | tok = <CHECK>
 | tok = <CLOSE>
 | tok = <COLLATE>
-| tok = <COLLATION>
 | tok = <COLUMN>
 | tok = <COMMIT>
 | tok = <CONNECT>
 | tok = <CONNECTION>
 | tok = <CONSTRAINT>
-| tok = <CONSTRAINTS>
 | tok = <CONTINUE>
 | tok = <CONVERT>
 | tok = <CORRESPONDING>
@@ -14709,12 +14767,8 @@ reservedKeyword() :
 | tok = <DECIMAL>
 | tok = <DECLARE>
 | tok = <_DEFAULT>
-| tok = <DEFERRABLE>
-| tok = <DEFERRED>
 | tok = <DELETE>
-| tok = <DESC>
 | tok = <DESCRIBE>
-| tok = <DIAGNOSTICS>
 | tok = <DISCONNECT>
 | tok = <DISTINCT>
 | tok = <DOUBLE>
@@ -14724,26 +14778,21 @@ reservedKeyword() :
 | tok = <ENDEXEC>
 | tok = <ESCAPE>
 | tok = <EXCEPT>
-| tok = <EXCEPTION>
 | tok = <EXEC>
 | tok = <EXECUTE>
 | tok = <EXISTS>
 | tok = <EXTERNAL>
 | tok = <FALSE>
 | tok = <FETCH>
-| tok = <FIRST>
 | tok = <FLOAT>
 | tok = <FOR>
 | tok = <FOREIGN>
-| tok = <FOUND>
 | tok = <FROM>
 | tok = <FULL>
 | tok = <FUNCTION>
 | tok = <GET>
 | tok = <GET_CURRENT_CONNECTION>
 | tok = <GLOBAL>
-| tok = <GO>
-| tok = <GOTO>
 | tok = <GRANT>
 | tok = <GROUP>
 | tok = <GROUP_CONCAT>
@@ -14754,7 +14803,6 @@ reservedKeyword() :
 | tok = <IN>
 | tok = <INDEX>
 | tok = <INDICATOR>
-| tok = <INITIALLY>
 | tok = <INNER>
 | tok = <INOUT>
 | tok = <INPUT>
@@ -14766,10 +14814,7 @@ reservedKeyword() :
 | tok = <INTERVAL>
 | tok = <INTO>
 | tok = <IS>
-| tok = <ISOLATION>
 | tok = <JOIN>
-| tok = <KEY>
-| tok = <LAST>
 | tok = <LEADING>
 | tok = <LEFT>
 | tok = <LIKE>
@@ -14795,26 +14840,19 @@ reservedKeyword() :
 | tok = <ON>
 | tok = <ONLY>
 | tok = <OPEN>
-| tok = <OPTION>
 | tok = <OR>
 | tok = <ORDER>
 | tok = <OUT>
 | tok = <OUTER>
 | tok = <OUTPUT>
 | tok = <OVERLAPS>
-| tok = <PAD>
-| tok = <PARTIAL>
+| tok = <PARTITION>
 | tok = <PREPARE>
-| tok = <PRESERVE>
 | tok = <PRIMARY>
-| tok = <PRIOR>
-| tok = <PRIVILEGES>
 | tok = <PROCEDURE>
 | tok = <PUBLIC>
-| tok = <READ>
 | tok = <REAL>
 | tok = <REFERENCES>
-| tok = <RELATIVE>
 | tok = <RESTRICT>
 | tok = <RETURNING>
 | tok = <REVOKE>
@@ -14825,12 +14863,10 @@ reservedKeyword() :
 | tok = <SCROLL>
 | tok = <SECOND>
 | tok = <SELECT>
-| tok = <SESSION>
 | tok = <SESSION_USER>
 | tok = <SET>
 | tok = <SMALLINT>
 | tok = <SOME>
-| tok = <SPACE>
 | tok = <SQL>
 | tok = <SQLCODE>
 | tok = <SQLERROR>
@@ -14840,12 +14876,10 @@ reservedKeyword() :
 | tok = <SUM>
 | tok = <SYSTEM_USER>
 | tok = <TABLE>
-| tok = <TEMPORARY>
 | tok = <TIMEZONE_HOUR>
 | tok = <TIMEZONE_MINUTE>
 | tok = <TO>
 | tok = <TRAILING>
-| tok = <TRANSACTION>
 | tok = <TRANSLATE>
 | tok = <TRANSLATION>
 | tok = <TRUE>
@@ -14859,12 +14893,9 @@ reservedKeyword() :
 | tok = <VALUES>
 | tok = <VARCHAR>
 | tok = <VARYING>
-| tok = <VIEW>
 | tok = <WHENEVER>
 | tok = <WHERE>
 | tok = <WITH>
-| tok = <WORK>
-| tok = <WRITE>
 | tok = <YEAR>
     /* non-SQL92 reserved keywords */
 | tok = <BOOLEAN>
@@ -14906,6 +14937,8 @@ nonReservedKeyword() :
 | tok = <ACTION>
 | tok = <AFTER>
 | tok = <ALWAYS>
+| tok = <ASC> // SQL92 reserved, SQL2003 non-reserved
+| tok = <ASSERTION> // SQL92 reserved, SQL2003 non-reserved
 | tok = <BEFORE>
 | tok = <BINARY>
 | tok = <BLOB>
@@ -14913,14 +14946,18 @@ nonReservedKeyword() :
 | tok = <BTREE>
 | tok = <C>
 | tok = <CALLED>
+| tok = <CASCADE> // SQL92 reserved, SQL2003 non-reserved
+| tok = <CHARACTER> // SQL92 reserved, SQL2003 non-reserved
 | tok = <CHARACTERISTICS>
 | tok = <CLASS>
 | tok = <CLOB>
 | tok = <COALESCE>
 | tok = <COBOL>
+| tok = <COLLATION> // SQL92 reserved, SQL2003 non-reserved
 | tok = <COMMITTED>
 | tok = <COMPRESS>
 | tok = <CONCAT>
+| tok = <CONSTRAINTS> // SQL92 reserved, SQL2003 non-reserved
 | tok = <CONTAINS>
 | tok = <CONTENT>
 | tok = <COPY>
@@ -14931,6 +14968,7 @@ nonReservedKeyword() :
 | tok = <CURTIME>
 | tok = <D>
 | tok = <DATA>
+| tok = <DATABASE>
 | tok = <DATE>
 | tok = <DATETIME>
 | tok = <DAY>
@@ -14938,42 +14976,54 @@ nonReservedKeyword() :
 | tok = <DAY_MICROSECOND>
 | tok = <DAY_MINUTE>
 | tok = <DAY_SECOND>
+| tok = <DB2SQL>
+| tok = <DEFERRABLE> // SQL92 reserved, SQL2003 non-reserved
+| tok = <DEFERRED> // SQL92 reserved, SQL2003 non-reserved
 | tok = <DEFRAGMENT>
 | tok = <DELIMITER>
+| tok = <DESC> // SQL92 reserved, SQL2003 non-reserved
+| tok = <DIAGNOSTICS> // SQL92 reserved, SQL2003 non-reserved
 | tok = <DIRTY>
 | tok = <DIV>
+| tok = <DOCUMENT>
 | tok = <DUMMY>
 | tok = <DYNAMIC>
-| tok = <DATABASE>
-| tok = <DB2SQL>
-| tok = <DOCUMENT>
 | tok = <EACH>
 | tok = <EMPTY>
 | tok = <ENCODING>
+| tok = <EXCEPTION> // SQL92 reserved, SQL2003 non-reserved
 | tok = <EXCLUSIVE>
 | tok = <EXTRACT>
+| tok = <FIRST> // SQL92 reserved, SQL2003 non-reserved
 | tok = <FN>
 | tok = <FORCE>
 | tok = <FORMAT>
 | tok = <FORTRAN>
+| tok = <FOUND> // SQL92 reserved, SQL2003 non-reserved
 | tok = <FULL_TEXT>
 | tok = <GENERATED>
+| tok = <GO> // SQL92 reserved, SQL2003 non-reserved
+| tok = <GOTO> // SQL92 reserved, SQL2003 non-reserved
 | tok = <HEADER>
 | tok = <HOUR_MICROSECOND>
 | tok = <HOUR_MINUTE>
 | tok = <HOUR_SECOND>
 | tok = <IDENTITY_VAL_LOCAL>
-| tok = <IGNORE>
 | tok = <IF>
-| tok = <IN_MEMORY>
+| tok = <IGNORE>
 | tok = <INCREMENT>
 | tok = <INITIAL>
+| tok = <INITIALLY> // SQL92 reserved, SQL2003 non-reserved
 | tok = <INPLACE>
 | tok = <INTERRUPT>
+| tok = <IN_MEMORY>
+| tok = <ISOLATION> // SQL92 reserved, SQL2003 non-reserved
 | tok = <JAVA>
+| tok = <KEY> // SQL92 reserved, SQL2003 non-reserved
 | tok = <KILL>
 | tok = <LANGUAGE>
 | tok = <LARGE>
+| tok = <LAST> // SQL92 reserved, SQL2003 non-reserved
 | tok = <LCASE>
 | tok = <LENGTH>
 | tok = <LEVEL>
@@ -15000,8 +15050,8 @@ nonReservedKeyword() :
 | tok = <MODIFY>
 // SQL92 says MODULE is reserved, but we want it to be non-reserved.
 | tok = <MODULE>
-| tok = <MONTH>
 | tok = <_MORE>
+| tok = <MONTH>
 | tok = <MUMPS>
 | tok = <MYSQL_DUMP>
 | tok = <NAME>
@@ -15015,20 +15065,28 @@ nonReservedKeyword() :
 | tok = <OFF>
 | LOOKAHEAD( { getToken(1).kind == OFFSET && !seeingOffsetClause() } )
   tok = <OFFSET>
+| tok = <OJ>
 | tok = <OLD>
 | tok = <OLD_TABLE>
-| tok = <OJ>
+| tok = <OPTION> // SQL92 reserved, SQL2003 non-reserved
 | tok = <OVER>
+| tok = <PAD> // SQL92 reserved, SQL2003 non-reserved
+| tok = <PARTIAL> // SQL92 reserved, SQL2003 non-reserved
 | tok = <PASCAL>
 | tok = <PASSING>
 | tok = <PLI>
 | tok = <POSITION>
 | tok = <PRECISION>
+| tok = <PRESERVE> // SQL92 reserved, SQL2003 non-reserved
+| tok = <PRIOR> // SQL92 reserved, SQL2003 non-reserved
+| tok = <PRIVILEGES> // SQL92 reserved, SQL2003 non-reserved
 | tok = <PROPERTIES>
 | tok = <PURGE>
 | tok = <QUARTER>
 | tok = <_QUOTE>
+| tok = <READ> // SQL92 reserved, SQL2003 non-reserved
 | tok = <READS>
+| tok = <RELATIVE> // SQL92 reserved, SQL2003 non-reserved
 | tok = <REF>
 // SQL92 says RELEASE is reserved, but we want it to be non-reserved.
 | tok = <RELEASE>
@@ -15057,19 +15115,21 @@ nonReservedKeyword() :
 | tok = <SEQUENCE>
 | tok = <SEQUENTIAL>
 | tok = <SERIALIZABLE>
+| tok = <SESSION> // SQL92 reserved, SQL2003 non-reserved
 | tok = <SETS>
 | tok = <SHARE>
 | tok = <SHUTDOWN>
+| tok = <SPACE> // SQL92 reserved, SQL2003 non-reserved
 | tok = <SPECIFIC>
 | tok = <SQLID>
-| tok = <SQL_TSI_FRAC_SECOND>
-| tok = <SQL_TSI_SECOND>
-| tok = <SQL_TSI_MINUTE>
-| tok = <SQL_TSI_HOUR>
 | tok = <SQL_TSI_DAY>
-| tok = <SQL_TSI_WEEK>
+| tok = <SQL_TSI_FRAC_SECOND>
+| tok = <SQL_TSI_HOUR>
+| tok = <SQL_TSI_MINUTE>
 | tok = <SQL_TSI_MONTH>
 | tok = <SQL_TSI_QUARTER>
+| tok = <SQL_TSI_SECOND>
+| tok = <SQL_TSI_WEEK>
 | tok = <SQL_TSI_YEAR>
 | tok = <SQRT>
 | tok = <STABILITY>
@@ -15079,9 +15139,10 @@ nonReservedKeyword() :
 | tok = <STDIN>
 | tok = <STDOUT>
 | tok = <STRIP>
-| tok = <SYNONYM>
 | tok = <STYLE>
+| tok = <SYNONYM>
 | tok = <T>
+| tok = <TEMPORARY> // SQL92 reserved, SQL2003 non-reserved
 | tok = <TEXT>
 | tok = <THEN>
 | tok = <TIME>
@@ -15091,6 +15152,7 @@ nonReservedKeyword() :
 | tok = <TINYBLOB>
 | tok = <TINYINT>
 | tok = <TINYTEXT>
+| tok = <TRANSACTION> // SQL92 reserved, SQL2003 non-reserved
 | tok = <TRIGGER>
 | tok = <TRUNCATE>
 | tok = <TRUNCATE_END>
@@ -15102,6 +15164,9 @@ nonReservedKeyword() :
 | tok = <UR>
 | tok = <USAGE>
 | tok = <USE>
+| tok = <VIEW> // SQL92 reserved, SQL2003 non-reserved
+| tok = <WORK> // SQL92 reserved, SQL2003 non-reserved
+| tok = <WRITE> // SQL92 reserved, SQL2003 non-reserved
 // SQL92 says VALUE is reserved, but we want it to be nonreserved.
 | tok = <VALUE>
 | tok = <VARBINARY>

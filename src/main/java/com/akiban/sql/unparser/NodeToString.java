@@ -87,6 +87,7 @@ public class NodeToString
             return fromList((FromList)node);
         case NodeTypes.JOIN_NODE:
         case NodeTypes.HALF_OUTER_JOIN_NODE:
+        case NodeTypes.FULL_OUTER_JOIN_NODE:
             return joinNode((JoinNode)node);
         case NodeTypes.UNION_NODE:
             return unionNode((UnionNode)node);
@@ -116,6 +117,18 @@ public class NodeToString
             return groupByColumn((GroupByColumn)node);
         case NodeTypes.ORDER_BY_COLUMN:
             return orderByColumn((OrderByColumn)node);
+        case NodeTypes.PARTITION_BY_LIST:
+            return partitionByList((PartitionByList)node);
+        case NodeTypes.PARTITION_BY_COLUMN:
+            return partitionByColumn((PartitionByColumn)node);
+        case NodeTypes.WINDOW_DEFINITION_NODE:
+            return windowDefinitionNode((WindowDefinitionNode)node);
+        case NodeTypes.WINDOW_REFERENCE_NODE:
+            return windowReferenceNode((WindowReferenceNode)node);
+        case NodeTypes.AGGREGATE_WINDOW_FUNCTION_NODE:
+            return aggregateWindowFunctionNode((AggregateWindowFunctionNode)node);
+        case NodeTypes.ROW_NUMBER_FUNCTION_NODE:
+            return rowNumberFunctionNode((RowNumberFunctionNode)node);
         case NodeTypes.AND_NODE:
         case NodeTypes.OR_NODE:
             return binaryLogicalOperatorNode((BinaryLogicalOperatorNode)node);
@@ -500,6 +513,12 @@ public class NodeToString
         if (node.getOrderByList() != null) {
             result += " " + toString(node.getOrderByList());
         }
+        if (node.getFetchFirstClause() != null) {
+            result += " LIMIT " + toString(node.getFetchFirstClause());
+        }
+        if (node.getOffsetClause() != null) {
+            result += " OFFSET " + toString(node.getOffsetClause());
+        }
         return result;
     }
 
@@ -523,6 +542,10 @@ public class NodeToString
         if (node.getHavingClause() != null) {
             str.append(" HAVING ");
             str.append(toString(node.getHavingClause()));
+        }
+        if (node.getWindows() != null) {
+            str.append(" ");
+            str.append(windowList(node.getWindows())); // Does not have NodeType.
         }
         return str.toString();
     }
@@ -716,6 +739,8 @@ public class NodeToString
         if (node instanceof HalfOuterJoinNode)
             joinType = ((HalfOuterJoinNode)node).isRightOuterJoin() ? 
                 JoinNode.JoinType.RIGHT_OUTER : JoinNode.JoinType.LEFT_OUTER;
+        else if (node instanceof FullOuterJoinNode)
+            joinType = JoinNode.JoinType.FULL_OUTER;
         str.append(' ');
         if (node.isNaturalJoin())
             str.append("NATURAL ");
@@ -772,6 +797,54 @@ public class NodeToString
             result += " NULLS FIRST";
         }
         return result;
+    }
+
+    protected String partitionByList(PartitionByList node) throws StandardException {
+        return "PARTITION BY " + nodeList(node);
+    }
+
+    protected String partitionByColumn(PartitionByColumn node) throws StandardException {
+        return toString(node.getColumnExpression());
+    }
+
+    protected String windowList(WindowList node) throws StandardException {
+        return "WINDOW " + nodeList(node);
+    }
+
+    protected String windowDefinitionNode(WindowDefinitionNode node)
+            throws StandardException {
+        StringBuffer str = new StringBuffer("");
+        if (!node.isInline()) {
+            str.append(node.getName());
+            str.append(" AS ");
+        }
+        str.append("(");
+        if (node.getPartitionByList() != null)
+            str.append(toString(node.getPartitionByList()));
+        if (node.getOrderByList() != null) {
+            if (node.getPartitionByList() != null)
+                str.append(" ");
+            str.append(toString(node.getOrderByList()));
+        }
+        str.append(")");
+        return str.toString();
+    }
+
+    protected String windowReferenceNode(WindowReferenceNode node)
+            throws StandardException {
+        return node.getName();
+    }
+    
+    protected String aggregateWindowFunctionNode(AggregateWindowFunctionNode node)
+            throws StandardException {
+        return toString(node.getAggregateFunction()) + 
+            " OVER " + toString(node.getWindow());
+    }
+
+    protected String rowNumberFunctionNode(RowNumberFunctionNode node)
+            throws StandardException {
+        return node.getOperator().toUpperCase() + "()" +
+            " OVER " + toString(node.getWindow());
     }
 
     protected String binaryLogicalOperatorNode(BinaryLogicalOperatorNode node) 
