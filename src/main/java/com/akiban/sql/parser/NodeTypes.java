@@ -217,6 +217,7 @@ public interface NodeTypes
     public static final int GROUP_CONCAT_NODE = 167;
     public static final int AT_RENAME_NODE = 168;
     public static final int AT_RENAME_COLUMN_NODE = 169;
+    public static final int SIMPLE_CASE_NODE = 170;
     public static final int PARTITION_BY_LIST = 171;
     public static final int PARTITION_BY_COLUMN = 172;
     public static final int FULL_OUTER_JOIN_NODE = 173;

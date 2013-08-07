@@ -653,6 +653,9 @@ public final class NodeFactoryImpl extends NodeFactory
         case NodeTypes.DEALLOCATE_STATEMENT_NODE:
             return NodeNames.DEALLOCATE_STATEMENT_NODE_NAME;
 
+        case NodeTypes.SIMPLE_CASE_NODE:
+            return NodeNames.SIMPLE_CASE_NODE_NAME;
+
         case NodeTypes.PARTITION_BY_LIST:
             return NodeNames.PARTITION_BY_LIST_NAME;
 

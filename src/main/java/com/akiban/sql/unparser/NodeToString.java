@@ -198,6 +198,8 @@ public class NodeToString
             return betweenOperatorNode((BetweenOperatorNode)node);
         case NodeTypes.CONDITIONAL_NODE:
             return conditionalNode((ConditionalNode)node);
+        case NodeTypes.SIMPLE_CASE_NODE:
+            return simpleCaseNode((SimpleCaseNode)node);
         case NodeTypes.COALESCE_FUNCTION_NODE:
             return coalesceFunctionNode((CoalesceFunctionNode)node);
         case NodeTypes.AGGREGATE_NODE:
@@ -1071,6 +1073,23 @@ public class NodeToString
                 str.append(maybeParens(elseNode));
                 break;
             }
+        }
+        str.append(" END");
+        return str.toString();
+    }
+
+    protected String simpleCaseNode(SimpleCaseNode node) throws StandardException {
+        StringBuilder str = new StringBuilder("CASE ");
+        str.append(maybeParens(node.getOperand()));
+        for (int i = 0; i < node.getNumberOfCases(); i++) {
+            str.append(" WHEN ");
+            str.append(maybeParens(node.getCaseOperand(i)));
+            str.append(" THEN ");
+            str.append(maybeParens(node.getResultValue(i)));
+        }
+        if (node.getElseValue() != null) {
+            str.append(" ELSE ");
+            str.append(maybeParens(node.getElseValue()));
         }
         str.append(" END");
         return str.toString();

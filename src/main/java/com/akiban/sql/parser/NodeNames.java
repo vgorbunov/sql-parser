@@ -327,6 +327,8 @@ public interface NodeNames
 
     static final String SET_TRANSACTION_ISOLATION_NODE_NAME = "com.akiban.sql.parser.SetTransactionIsolationNode";
 
+    static final String SIMPLE_CASE_NODE_NAME = "com.akiban.sql.parser.SimpleCaseNode";
+
     static final String SIMPLE_STRING_OPERATOR_NODE_NAME = "com.akiban.sql.parser.SimpleStringOperatorNode";
 
     static final String SPECIAL_FUNCTION_NODE_NAME = "com.akiban.sql.parser.SpecialFunctionNode";

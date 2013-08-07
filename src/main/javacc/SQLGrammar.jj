@@ -12551,7 +12551,7 @@ valueSpecification() throws StandardException :
                                               parserContext);
     }
 |
-    <CASE> value = whenThenExpression()
+    <CASE> value = caseExpression()
     {
         return value;
     }
@@ -12563,23 +12563,13 @@ caseExpression() throws StandardException :
     ValueNode expr;
 }
 {
-    <END>
-    {
-        ValueNode value = (ValueNode)nodeFactory.getNode(NodeTypes.CAST_NODE,
-                                                         (ValueNode)nodeFactory.getNode(NodeTypes.UNTYPED_NULL_CONSTANT_NODE,
-                                                                                        parserContext),
-                                                         DataTypeDescriptor.getBuiltInDataTypeDescriptor(Types.CHAR, 1),    
-                                                         parserContext);
-        ((CastNode)value).setForExternallyGeneratedCASTnode();
-        return value;
-    }
-|
-    <ELSE> expr = thenElseExpression() <END>
+    LOOKAHEAD ( { getToken(1).kind == WHEN } )
+    expr = whenThenExpression()
     {
         return expr;
     }
 |
-    expr = whenThenExpression()
+    expr = simpleCaseExpression()
     {
         return expr;
     }
@@ -12596,7 +12586,7 @@ whenThenExpression() throws StandardException :
     <WHEN> expr = orExpression(null) 
         ( <OR> expr = orExpression(expr) )*
         <THEN> thenExpr = thenElseExpression()
-    elseExpr = caseExpression()
+    elseExpr = caseElseExpression()
     {
         ValueNodeList thenElseList = (ValueNodeList)nodeFactory.getNode(NodeTypes.VALUE_NODE_LIST, parserContext);
         thenElseList.addValueNode(thenExpr); // then
@@ -12632,6 +12622,85 @@ thenElseExpression() throws StandardException :
     {
         return expr;
     }
+}
+
+ValueNode
+caseElseExpression() throws StandardException :
+{
+    ValueNode expr;
+}
+{
+    <END>
+    {
+        ValueNode value = (ValueNode)nodeFactory.getNode(NodeTypes.CAST_NODE,
+                                                         (ValueNode)nodeFactory.getNode(NodeTypes.UNTYPED_NULL_CONSTANT_NODE,
+                                                                                        parserContext),
+                                                         DataTypeDescriptor.getBuiltInDataTypeDescriptor(Types.CHAR, 1),    
+                                                         parserContext);
+        ((CastNode)value).setForExternallyGeneratedCASTnode();
+        return value;
+    }
+|
+    <ELSE> expr = thenElseExpression() <END>
+    {
+        return expr;
+    }
+|
+    expr = whenThenExpression()
+    {
+        return expr;
+    }
+}
+
+ValueNode
+simpleCaseExpression() throws StandardException :
+{
+    ValueNode operand;
+    SimpleCaseNode caseExpr;
+}
+{
+    operand = additiveExpression()
+    {
+        caseExpr = (SimpleCaseNode)nodeFactory.getNode(NodeTypes.SIMPLE_CASE_NODE,
+                                                       operand, 
+                                                       parserContext);
+    }
+    simpleCaseWhenThenExpression(caseExpr)
+    {
+        return caseExpr;
+    }
+}
+
+void
+simpleCaseWhenThenExpression(SimpleCaseNode caseExpr) throws StandardException :
+{
+    ValueNode expr;
+    ValueNode thenExpr;
+    ValueNode elseExpr;
+}
+{
+    <WHEN> expr = additiveExpression()
+    <THEN> thenExpr = thenElseExpression()
+    {
+        caseExpr.addCase(expr, thenExpr);
+    }
+    simpleCaseElseExpression(caseExpr)
+}
+
+void
+simpleCaseElseExpression(SimpleCaseNode caseExpr) throws StandardException :
+{
+    ValueNode expr;
+}
+{
+    <END>
+|
+    <ELSE> expr = thenElseExpression() <END>
+    {
+        caseExpr.setElseValue(expr);
+    }
+|
+    simpleCaseWhenThenExpression(caseExpr)
 }
 
 void
