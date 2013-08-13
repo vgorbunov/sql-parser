@@ -18,7 +18,7 @@
  * Isolation levels.
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 public enum IsolationLevel {
     UNSPECIFIED_ISOLATION_LEVEL("UNSPECIFIED"),

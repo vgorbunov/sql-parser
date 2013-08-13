@@ -37,7 +37,7 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 /**
  * A NOPStatement node is for statements that don't do anything.    At the

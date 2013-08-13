@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
-import com.akiban.sql.parser.JoinNode.JoinType;
+import com.foundationdb.sql.parser.JoinNode.JoinType;
 
 public interface IndexDefinition {
     public boolean getUniqueness();

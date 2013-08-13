@@ -37,7 +37,7 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 /**
  * A ModifyColumnNode represents a modify column in an ALTER TABLE statement.

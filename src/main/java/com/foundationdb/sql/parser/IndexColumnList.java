@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
-import com.akiban.sql.StandardException;
+import com.foundationdb.sql.StandardException;
 
 /**
  * List of IndexColumns. Also notes application of up to one function to

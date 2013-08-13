@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
-import com.akiban.sql.types.ValueClassName;
+import com.foundationdb.sql.types.ValueClassName;
 
 /**
  * This node represents a binary arithmetic operator, like + or *.

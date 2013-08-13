@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 /**
  * MySQL's index hints.

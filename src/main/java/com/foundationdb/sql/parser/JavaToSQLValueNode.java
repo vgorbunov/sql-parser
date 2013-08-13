@@ -37,9 +37,9 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
-import com.akiban.sql.StandardException;
+import com.foundationdb.sql.StandardException;
 
 /**
  * This node type converts a value from the Java domain to the SQL domain.

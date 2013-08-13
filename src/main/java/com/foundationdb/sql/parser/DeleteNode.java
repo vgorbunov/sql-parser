@@ -37,7 +37,7 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 /**
  * A DeleteNode represents a DELETE statement. It is the top-level node

@@ -37,7 +37,7 @@
 
  */
 
-package com.akiban.sql.types;
+package com.foundationdb.sql.types;
 
 /**
  * Describe a method alias.

@@ -37,9 +37,9 @@ limitations under the License.
 
 */
 
-package com.akiban.sql.types;
+package com.foundationdb.sql.types;
 
-import com.akiban.sql.StandardException;
+import com.foundationdb.sql.StandardException;
 
 import java.sql.Types;
 

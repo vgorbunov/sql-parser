@@ -16,7 +16,7 @@
 
 /* Derived from automatically generated file */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 /** Token Manager Error. */
 class TokenMgrError extends Error

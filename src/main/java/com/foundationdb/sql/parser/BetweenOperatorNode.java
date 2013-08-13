@@ -37,7 +37,7 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 /**
  * A BetweenOperatorNode represents a BETWEEN clause. The between values are

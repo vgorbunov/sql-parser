@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 /**
  * A PartitionByList represents the list of expressions in a PARTITION BY clause in

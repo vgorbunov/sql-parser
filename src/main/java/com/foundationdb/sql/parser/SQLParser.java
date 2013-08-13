@@ -23,9 +23,9 @@
 // and SQLSTATE values, which will be needed, but in the context of
 // the new engine.
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
-import com.akiban.sql.StandardException;
+import com.foundationdb.sql.StandardException;
 
 import java.util.ArrayList;
 import java.util.EnumSet;

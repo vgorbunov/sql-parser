@@ -37,9 +37,9 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
-import com.akiban.sql.StandardException;
+import com.foundationdb.sql.StandardException;
 
 /**
  * A DMLStatementNode represents any type of DML statement: a cursor declaration,

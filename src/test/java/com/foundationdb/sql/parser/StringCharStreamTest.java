@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 import org.junit.After;
 import org.junit.Before;

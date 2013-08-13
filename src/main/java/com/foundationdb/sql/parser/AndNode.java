@@ -37,7 +37,7 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 public class AndNode extends BinaryLogicalOperatorNode
 {

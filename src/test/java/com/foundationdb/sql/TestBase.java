@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.akiban.sql;
+package com.foundationdb.sql;
 
 import org.junit.ComparisonFailure;
 import org.junit.Ignore;

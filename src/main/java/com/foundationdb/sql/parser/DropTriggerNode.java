@@ -37,7 +37,7 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 /**
  * A DropTriggerNode is the root of a QueryTree that represents a DROP TRIGGER

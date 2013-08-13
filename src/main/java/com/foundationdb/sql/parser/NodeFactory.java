@@ -37,10 +37,10 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
-import com.akiban.sql.StandardException;
-import com.akiban.sql.types.AliasInfo;
+import com.foundationdb.sql.StandardException;
+import com.foundationdb.sql.types.AliasInfo;
 
 /**
     This is an interface for NodeFactories.

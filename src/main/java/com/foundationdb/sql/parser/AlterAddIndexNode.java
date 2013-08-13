@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
-import com.akiban.sql.StandardException;
-import com.akiban.sql.parser.JoinNode.JoinType;
+import com.foundationdb.sql.StandardException;
+import com.foundationdb.sql.parser.JoinNode.JoinType;
 import java.util.Properties;
 
 public class AlterAddIndexNode extends TableElementNode

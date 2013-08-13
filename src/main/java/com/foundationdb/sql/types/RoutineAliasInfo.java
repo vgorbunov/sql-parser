@@ -37,10 +37,10 @@
 
  */
 
-package com.akiban.sql.types;
+package com.foundationdb.sql.types;
 
 import java.sql.ParameterMetaData;
-import com.akiban.sql.types.DataTypeDescriptor;
+import com.foundationdb.sql.types.DataTypeDescriptor;
 
 /**
  * Describe a routine (procedure or function) alias.

@@ -37,13 +37,13 @@
 
  */
 
-package com.akiban.sql.compiler;
+package com.foundationdb.sql.compiler;
 
-import com.akiban.sql.parser.*;
+import com.foundationdb.sql.parser.*;
 
-import com.akiban.sql.StandardException;
-import com.akiban.sql.types.DataTypeDescriptor;
-import com.akiban.sql.types.TypeId;
+import com.foundationdb.sql.StandardException;
+import com.foundationdb.sql.types.DataTypeDescriptor;
+import com.foundationdb.sql.types.TypeId;
 
 /**
  * This class implements TypeCompiler for the SQL BOOLEAN datatype.

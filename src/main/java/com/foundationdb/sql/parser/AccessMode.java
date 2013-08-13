@@ -19,7 +19,7 @@
  *
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 public enum AccessMode {
     READ_ONLY_ACCESS_MODE("READ ONLY"),

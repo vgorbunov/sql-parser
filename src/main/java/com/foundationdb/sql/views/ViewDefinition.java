@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.akiban.sql.views;
+package com.foundationdb.sql.views;
 
-import com.akiban.sql.parser.*;
+import com.foundationdb.sql.parser.*;
 
-import com.akiban.sql.StandardException;
+import com.foundationdb.sql.StandardException;
 
 public class ViewDefinition
 {

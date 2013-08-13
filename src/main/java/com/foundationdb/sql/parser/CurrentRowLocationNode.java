@@ -37,7 +37,7 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 /**
  * The CurrentRowLocation operator is used by DELETE and UPDATE to get the

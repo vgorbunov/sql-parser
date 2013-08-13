@@ -37,9 +37,9 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
-import com.akiban.sql.types.TypeId;
+import com.foundationdb.sql.types.TypeId;
 
 import java.sql.Types;
 

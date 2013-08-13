@@ -36,9 +36,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
  */
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
-import com.akiban.sql.StandardException;
+import com.foundationdb.sql.StandardException;
 
 /**
  * An InListOperatorNode represents an IN list.

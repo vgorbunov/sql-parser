@@ -23,7 +23,7 @@
 // and SQLSTATE values, which will be needed, but in the context of
 // the new engine.
 
-package com.akiban.sql;
+package com.foundationdb.sql;
 
 public class StandardException extends Exception {
     public StandardException(String msg) {

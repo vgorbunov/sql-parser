@@ -37,9 +37,9 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
-import com.akiban.sql.types.DataTypeDescriptor;
+import com.foundationdb.sql.types.DataTypeDescriptor;
 
 import java.util.List;
 

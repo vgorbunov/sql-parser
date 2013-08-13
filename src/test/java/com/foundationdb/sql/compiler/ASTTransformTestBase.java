@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.akiban.sql.compiler;
+package com.foundationdb.sql.compiler;
 
-import com.akiban.sql.TestBase;
+import com.foundationdb.sql.TestBase;
 
-import com.akiban.sql.parser.StatementNode;
-import com.akiban.sql.parser.SQLParser;
-import com.akiban.sql.unparser.NodeToString;
+import com.foundationdb.sql.parser.StatementNode;
+import com.foundationdb.sql.parser.SQLParser;
+import com.foundationdb.sql.unparser.NodeToString;
 
 import org.junit.Before;
 import org.junit.Ignore;
