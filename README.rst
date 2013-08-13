@@ -130,6 +130,6 @@ More Information
 ----------------
 
 For more information, visit our Q&A site at
-`community.foundationdb.com <http://community.foundationdb.com>` or hop on the
+`community.foundationdb.com <http://community.foundationdb.com>`_ or hop on the
 #foundationdb channel on irc.freenode.net
 
