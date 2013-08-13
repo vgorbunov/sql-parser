@@ -607,7 +607,7 @@ public class TypeId
         else if (javaTypeName.equals("java.sql.Clob")) {
             return CLOB_ID;
         }
-        else if (javaTypeName.equals("com.akiban.sql.types.XML")) {
+        else if (javaTypeName.equals("com.foundationdb.sql.types.XML")) {
             return XML_ID;
         }
         else {
@@ -1120,7 +1120,7 @@ public class TypeId
             unqualifiedName = TypeId.XML_NAME;
             JDBCTypeId = Types.SQLXML;
             typePrecedence = XML_PRECEDENCE;
-            javaTypeName = "com.akiban.sql.types.XML";
+            javaTypeName = "com.foundationdb.sql.types.XML";
             maxMaxWidth = TypeId.XML_MAXWIDTH;
             isComparable = false;
             break;
