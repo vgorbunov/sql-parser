@@ -1,4 +1,4 @@
-com.akiban.sql.parser.CreateIndexNode@26fd68b1
+com.foundationdb.sql.parser.CreateIndexNode@26fd68b1
 name: g1
 statementType: CREATE INDEX
 unique: false
@@ -10,20 +10,20 @@ properties: null
 existenceCheck: NO_CONDITION
 storageLocation: null
 	
-	com.akiban.sql.parser.IndexColumnList@46e45076
+	com.foundationdb.sql.parser.IndexColumnList@46e45076
 
 	[0]:	
-	com.akiban.sql.parser.IndexColumn@375e9756
+	com.foundationdb.sql.parser.IndexColumn@375e9756
 	columnName: c1
 	tableName: schema1.t1
 	ascending
 	[1]:	
-	com.akiban.sql.parser.IndexColumn@2321ab80
+	com.foundationdb.sql.parser.IndexColumn@2321ab80
 	columnName: c2
 	tableName: t2
 	ascending
 	[2]:	
-	com.akiban.sql.parser.IndexColumn@77827284
+	com.foundationdb.sql.parser.IndexColumn@77827284
 	columnName: c3
 	tableName: null
 	ascending

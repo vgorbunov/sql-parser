@@ -1,4 +1,4 @@
-com.akiban.sql.parser.AlterTableNode@6d75ae09
+com.foundationdb.sql.parser.AlterTableNode@6d75ae09
 name: test.t1
 statementType: ALTER TABLE
 objectName: test.t1
@@ -12,9 +12,9 @@ updateStatistics: false
 updateStatisticsAll: false
 indexNameForUpdateStatistics: null
 tableElementList: 	
-	com.akiban.sql.parser.TableElementList@48f50903
+	com.foundationdb.sql.parser.TableElementList@48f50903
 
 	[0]:	
-	com.akiban.sql.parser.AlterTableRenameNode@4f22c960
+	com.foundationdb.sql.parser.AlterTableRenameNode@4f22c960
 	name: test.t2
 	elementType: AT_RENAME

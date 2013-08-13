@@ -1,4 +1,4 @@
-com.akiban.sql.parser.CopyStatementNode@49de17f4
+com.foundationdb.sql.parser.CopyStatementNode@49de17f4
 mode: FROM_SUBQUERY
 tableName: null
 filename: /tmp/t12.txt
@@ -11,17 +11,17 @@ encoding: null
 commitFrequency: 0
 statementType: COPY
 subquery: 	
-	com.akiban.sql.parser.SubqueryNode@13f6ba0f
+	com.foundationdb.sql.parser.SubqueryNode@13f6ba0f
 	subqueryType: FROM
 	type: null
 	resultSet: 		
-		com.akiban.sql.parser.SelectNode@2b313906
+		com.foundationdb.sql.parser.SelectNode@2b313906
 		isDistinct: false
 		resultColumns: 			
-			com.akiban.sql.parser.ResultColumnList@2c96cf11
+			com.foundationdb.sql.parser.ResultColumnList@2c96cf11
 
 			[0]:			
-			com.akiban.sql.parser.AllResultColumn@60f47bf5
+			com.foundationdb.sql.parser.AllResultColumn@60f47bf5
 			tableName: null
 			exposedName: null
 			name: null
@@ -29,17 +29,17 @@ subquery:
 			isDefaultColumn: false
 			type: null
 		fromList: 			
-			com.akiban.sql.parser.FromList@52f6438d
+			com.foundationdb.sql.parser.FromList@52f6438d
 
 			[0]:			
-			com.akiban.sql.parser.FromBaseTable@25cd0888
+			com.foundationdb.sql.parser.FromBaseTable@25cd0888
 			tableName: t1
 			updateOrDelete: null
 			null
 			correlation Name: null
 			null
 			[1]:			
-			com.akiban.sql.parser.FromBaseTable@37eb2c1b
+			com.foundationdb.sql.parser.FromBaseTable@37eb2c1b
 			tableName: t2
 			updateOrDelete: null
 			null

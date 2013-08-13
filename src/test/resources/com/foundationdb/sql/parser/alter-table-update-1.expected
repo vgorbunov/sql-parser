@@ -1,4 +1,4 @@
-com.akiban.sql.parser.AlterTableNode@68861f24
+com.foundationdb.sql.parser.AlterTableNode@68861f24
 name: test.t1
 statementType: ALTER TABLE
 objectName: test.t1

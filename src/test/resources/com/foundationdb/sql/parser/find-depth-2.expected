@@ -1,30 +1,30 @@
-com.akiban.sql.parser.CursorNode@bf3fd22
+com.foundationdb.sql.parser.CursorNode@bf3fd22
 name: null
 updateMode: UNSPECIFIED
 statementType: SELECT
 resultSet: 	
-	com.akiban.sql.parser.SelectNode@3f6fc94f
+	com.foundationdb.sql.parser.SelectNode@3f6fc94f
 	isDistinct: false
 	resultColumns: 		
-		com.akiban.sql.parser.ResultColumnList@44098212
+		com.foundationdb.sql.parser.ResultColumnList@44098212
 
 		[0]:		
-		com.akiban.sql.parser.ResultColumn@4c3a8ea3
+		com.foundationdb.sql.parser.ResultColumn@4c3a8ea3
 		exposedName: null
 		name: null
 		tableName: null
 		isDefaultColumn: false
 		type: null
 		expression: 			
-			com.akiban.sql.parser.InListOperatorNode@186a966e
+			com.foundationdb.sql.parser.InListOperatorNode@186a966e
 			operator: IN
 			methodName: in
 			type: null
 			leftOperand: 				
-				com.akiban.sql.parser.RowConstructorNode@7dba1c47
+				com.foundationdb.sql.parser.RowConstructorNode@7dba1c47
 				depth: 0
 			rightOperandList: 				
-				com.akiban.sql.parser.RowConstructorNode@4596b9cd
+				com.foundationdb.sql.parser.RowConstructorNode@4596b9cd
 				depth: 1
 	fromList: 		
-		com.akiban.sql.parser.FromList@2a80656c
+		com.foundationdb.sql.parser.FromList@2a80656c

@@ -1,13 +1,13 @@
-com.akiban.sql.parser.CreateTableNode@303020ad
+com.foundationdb.sql.parser.CreateTableNode@303020ad
 name: t1
 statementType: CREATE TABLE
 lockGranularity: R
 existenceCheck: NO_CONDITION
 tableElementList: 	
-	com.akiban.sql.parser.TableElementList@27b15692
+	com.foundationdb.sql.parser.TableElementList@27b15692
 
 	[0]:	
-	com.akiban.sql.parser.ColumnDefinitionNode@6baa9f99
+	com.foundationdb.sql.parser.ColumnDefinitionNode@6baa9f99
 	type: serial
 	name: c1
 	elementType: null

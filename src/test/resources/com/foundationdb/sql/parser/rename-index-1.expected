@@ -1,4 +1,4 @@
-com.akiban.sql.parser.RenameNode@7f70888e
+com.foundationdb.sql.parser.RenameNode@7f70888e
 name: x
 statementType: RENAME INDEX
 oldIndexName:

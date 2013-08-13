@@ -1,4 +1,4 @@
-com.akiban.sql.parser.AlterTableNode@3b362ca8
+com.foundationdb.sql.parser.AlterTableNode@3b362ca8
 name: netbeans1
 statementType: ALTER TABLE
 objectName: netbeans1
@@ -12,10 +12,10 @@ updateStatistics: false
 updateStatisticsAll: false
 indexNameForUpdateStatistics: null
 tableElementList: 	
-	com.akiban.sql.parser.TableElementList@61ade7f6
+	com.foundationdb.sql.parser.TableElementList@61ade7f6
 
 	[0]:	
-	com.akiban.sql.parser.AlterDropIndexNode@6057f993
+	com.foundationdb.sql.parser.AlterDropIndexNode@6057f993
 	name: netbeansidx
 	elementType: AT_DROP_INDEX
 	

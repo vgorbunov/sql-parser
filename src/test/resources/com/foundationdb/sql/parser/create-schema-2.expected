@@ -1,4 +1,4 @@
-com.akiban.sql.parser.CreateSchemaNode@6f34a7d8
+com.foundationdb.sql.parser.CreateSchemaNode@6f34a7d8
 statementType: CREATE SCHEMA
 schemaName: 
 tjoneslo

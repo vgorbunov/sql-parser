@@ -1,4 +1,4 @@
-com.akiban.sql.parser.AlterServerNode@375e9756
+com.foundationdb.sql.parser.AlterServerNode@375e9756
 statementType: ALTER SERVER
 variable: instrumentation
 value: true

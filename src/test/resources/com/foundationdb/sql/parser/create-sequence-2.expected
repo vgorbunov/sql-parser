@@ -1,4 +1,4 @@
-com.akiban.sql.parser.CreateSequenceNode@244aeb52
+com.foundationdb.sql.parser.CreateSequenceNode@244aeb52
 name: test.new_sequence
 statementType: CREATE SEQUENCE
 sequenceName: test.new_sequence

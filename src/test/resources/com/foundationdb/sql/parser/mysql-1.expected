@@ -1,50 +1,50 @@
-com.akiban.sql.parser.CursorNode@424ecfdd
+com.foundationdb.sql.parser.CursorNode@424ecfdd
 name: null
 updateMode: UNSPECIFIED
 statementType: SELECT
 resultSet: 	
-	com.akiban.sql.parser.SelectNode@4430d82d
+	com.foundationdb.sql.parser.SelectNode@4430d82d
 	isDistinct: false
 	resultColumns: 		
-		com.akiban.sql.parser.ResultColumnList@62c09554
+		com.foundationdb.sql.parser.ResultColumnList@62c09554
 
 		[0]:		
-		com.akiban.sql.parser.ResultColumn@518bf072
+		com.foundationdb.sql.parser.ResultColumn@518bf072
 		exposedName: null
 		name: null
 		tableName: null
 		isDefaultColumn: false
 		type: null
 		expression: 			
-			com.akiban.sql.parser.BinaryBitOperatorNode@3a56f631
+			com.foundationdb.sql.parser.BinaryBitOperatorNode@3a56f631
 			operator: |
 			methodName: bitor
 			type: null
 			leftOperand: 				
-				com.akiban.sql.parser.BinaryBitOperatorNode@233d28e3
+				com.foundationdb.sql.parser.BinaryBitOperatorNode@233d28e3
 				operator: &
 				methodName: bitand
 				type: null
 				leftOperand: 					
-					com.akiban.sql.parser.ColumnReference@4476128
+					com.foundationdb.sql.parser.ColumnReference@4476128
 					columnName: z
 					tableName: null
 					type: null
 				rightOperand: 					
-					com.akiban.sql.parser.ColumnReference@6a3b8b49
+					com.foundationdb.sql.parser.ColumnReference@6a3b8b49
 					columnName: y
 					tableName: null
 					type: null
 			rightOperand: 				
-				com.akiban.sql.parser.ColumnReference@6b359c1b
+				com.foundationdb.sql.parser.ColumnReference@6b359c1b
 				columnName: z
 				tableName: null
 				type: null
 	fromList: 		
-		com.akiban.sql.parser.FromList@c9be79a
+		com.foundationdb.sql.parser.FromList@c9be79a
 
 		[0]:		
-		com.akiban.sql.parser.FromBaseTable@4f8235ed
+		com.foundationdb.sql.parser.FromBaseTable@4f8235ed
 		tableName: bits
 		updateOrDelete: null
 		null

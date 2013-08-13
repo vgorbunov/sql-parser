@@ -1,15 +1,15 @@
-com.akiban.sql.parser.CursorNode@33aae94f
+com.foundationdb.sql.parser.CursorNode@33aae94f
 name: null
 updateMode: UNSPECIFIED
 statementType: SELECT
 resultSet: 	
-	com.akiban.sql.parser.SelectNode@19bb5c09
+	com.foundationdb.sql.parser.SelectNode@19bb5c09
 	isDistinct: false
 	resultColumns: 		
-		com.akiban.sql.parser.ResultColumnList@5b976011
+		com.foundationdb.sql.parser.ResultColumnList@5b976011
 
 		[0]:		
-		com.akiban.sql.parser.AllResultColumn@2f242b11
+		com.foundationdb.sql.parser.AllResultColumn@2f242b11
 		tableName: null
 		exposedName: null
 		name: null
@@ -17,25 +17,25 @@ resultSet:
 		isDefaultColumn: false
 		type: null
 	fromList: 		
-		com.akiban.sql.parser.FromList@6f878144
+		com.foundationdb.sql.parser.FromList@6f878144
 
 		[0]:		
-		com.akiban.sql.parser.FromBaseTable@2937d090
+		com.foundationdb.sql.parser.FromBaseTable@2937d090
 		tableName: t1
 		updateOrDelete: null
 		null
 		correlation Name: null
 		null
 		indexHints: 			
-			com.akiban.sql.parser.IndexHintList@f5db314
+			com.foundationdb.sql.parser.IndexHintList@f5db314
 
 			[0]:			
-			com.akiban.sql.parser.IndexHintNode@5097eded
+			com.foundationdb.sql.parser.IndexHintNode@5097eded
 			hintType: USE
 			hintScope: null
 			indexes: [idx_1, idx_2]
 		[1]:		
-		com.akiban.sql.parser.FromBaseTable@26858bf1
+		com.foundationdb.sql.parser.FromBaseTable@26858bf1
 		tableName: t2
 		updateOrDelete: null
 		null

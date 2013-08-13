@@ -1,4 +1,4 @@
-com.akiban.sql.parser.CreateSequenceNode@244aeb52
+com.foundationdb.sql.parser.CreateSequenceNode@244aeb52
 name: newsequence
 statementType: CREATE SEQUENCE
 sequenceName: newsequence

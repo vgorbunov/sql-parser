@@ -1,4 +1,4 @@
-com.akiban.sql.parser.DropSchemaNode@24f9fdc
+com.foundationdb.sql.parser.DropSchemaNode@24f9fdc
 statementType: DROP SCHEMA
 schemaName: 
 tjoneslo

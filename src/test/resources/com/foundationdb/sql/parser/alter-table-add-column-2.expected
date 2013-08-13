@@ -1,4 +1,4 @@
-com.akiban.sql.parser.AlterTableNode@267fbe19
+com.foundationdb.sql.parser.AlterTableNode@267fbe19
 name: t
 statementType: ALTER TABLE
 objectName: t
@@ -12,10 +12,10 @@ updateStatistics: false
 updateStatisticsAll: false
 indexNameForUpdateStatistics: null
 tableElementList: 	
-	com.akiban.sql.parser.TableElementList@c996f0e
+	com.foundationdb.sql.parser.TableElementList@c996f0e
 
 	[0]:	
-	com.akiban.sql.parser.ColumnDefinitionNode@2d4a0698
+	com.foundationdb.sql.parser.ColumnDefinitionNode@2d4a0698
 	type: DOUBLE
 	name: c
 	elementType: null

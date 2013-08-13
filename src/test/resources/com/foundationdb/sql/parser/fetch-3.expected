@@ -1,4 +1,4 @@
-com.akiban.sql.parser.FetchStatementNode@7977b9b
+com.foundationdb.sql.parser.FetchStatementNode@7977b9b
 name: pc
 count: ALL
 statementType: FETCH

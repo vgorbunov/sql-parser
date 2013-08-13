@@ -1,4 +1,4 @@
-com.akiban.sql.parser.AlterTableNode@1d5a0305
+com.foundationdb.sql.parser.AlterTableNode@1d5a0305
 name: t3
 statementType: ALTER TABLE
 objectName: t3
@@ -12,10 +12,10 @@ updateStatistics: false
 updateStatisticsAll: false
 indexNameForUpdateStatistics: null
 tableElementList: 	
-	com.akiban.sql.parser.TableElementList@7c4c51
+	com.foundationdb.sql.parser.TableElementList@7c4c51
 
 	[0]:	
-	com.akiban.sql.parser.FKConstraintDefinitionNode@60765a16
+	com.foundationdb.sql.parser.FKConstraintDefinitionNode@60765a16
 	refTable name : t2
 	grouping: true
 	constraintName: gfk1
@@ -24,17 +24,17 @@ tableElementList:
 	name: gfk1
 	elementType: AT_DROP_CONSTRAINT
 	columnList: 		
-		com.akiban.sql.parser.ResultColumnList@7a148bd3
+		com.foundationdb.sql.parser.ResultColumnList@7a148bd3
 
 		[0]:		
-		com.akiban.sql.parser.ResultColumn@5ae80842
+		com.foundationdb.sql.parser.ResultColumn@5ae80842
 		exposedName: c2
 		name: c2
 		tableName: null
 		isDefaultColumn: false
 		type: null
 		[1]:		
-		com.akiban.sql.parser.ResultColumn@377653ae
+		com.foundationdb.sql.parser.ResultColumn@377653ae
 		exposedName: c3
 		name: c3
 		tableName: null

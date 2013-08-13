@@ -120,7 +120,7 @@ public class TestBase
         return sqlAndExpected(dir, true);
     }
     
-    static final boolean RUN_FAILING_TESTS = Boolean.getBoolean("akiban.sql.test.runFailing");
+    static final boolean RUN_FAILING_TESTS = Boolean.getBoolean("foundationdb.sql.test.runFailing");
 
     public static Collection<Object[]> sqlAndExpected(File dir, 
                                                       boolean andParams)

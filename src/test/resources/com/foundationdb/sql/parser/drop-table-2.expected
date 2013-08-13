@@ -1,4 +1,4 @@
-com.akiban.sql.parser.DropTableNode@b23b25c
+com.foundationdb.sql.parser.DropTableNode@b23b25c
 name: test.t1
 statementType: DROP TABLE
 dropBehavior: 2

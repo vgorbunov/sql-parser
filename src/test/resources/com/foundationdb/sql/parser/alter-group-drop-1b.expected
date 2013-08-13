@@ -1,4 +1,4 @@
-com.akiban.sql.parser.AlterTableNode@1a1c1f5
+com.foundationdb.sql.parser.AlterTableNode@1a1c1f5
 name: t1
 statementType: ALTER TABLE
 objectName: t1
@@ -12,10 +12,10 @@ updateStatistics: false
 updateStatisticsAll: false
 indexNameForUpdateStatistics: null
 tableElementList: 	
-	com.akiban.sql.parser.TableElementList@22c4bca9
+	com.foundationdb.sql.parser.TableElementList@22c4bca9
 
 	[0]:	
-	com.akiban.sql.parser.FKConstraintDefinitionNode@223e0d14
+	com.foundationdb.sql.parser.FKConstraintDefinitionNode@223e0d14
 	refTable name : null
 	grouping: true
 	constraintName: null

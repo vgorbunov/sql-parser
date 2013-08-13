@@ -1,23 +1,23 @@
-com.akiban.sql.parser.CreateTableNode@62892cc5
+com.foundationdb.sql.parser.CreateTableNode@62892cc5
 name: t1
 statementType: CREATE TABLE
 lockGranularity: R
 existenceCheck: NO_CONDITION
 tableElementList: 	
-	com.akiban.sql.parser.TableElementList@1bda6c0d
+	com.foundationdb.sql.parser.TableElementList@1bda6c0d
 
 	[0]:	
-	com.akiban.sql.parser.ColumnDefinitionNode@20ebd7c4
+	com.foundationdb.sql.parser.ColumnDefinitionNode@20ebd7c4
 	type: INTEGER
 	name: c1
 	elementType: null
 	[1]:	
-	com.akiban.sql.parser.ColumnDefinitionNode@5ba295be
+	com.foundationdb.sql.parser.ColumnDefinitionNode@5ba295be
 	type: DOUBLE
 	name: c2
 	elementType: null
 	[2]:	
-	com.akiban.sql.parser.IndexConstraintDefinitionNode@f151bf2
+	com.foundationdb.sql.parser.IndexConstraintDefinitionNode@f151bf2
 	constraintName: null
 	constraintType: INDEX
 	properties: null
@@ -28,15 +28,15 @@ tableElementList:
 	joinType: null
 	location: null
 	indexColumnList: 		
-		com.akiban.sql.parser.IndexColumnList@3138554d
+		com.foundationdb.sql.parser.IndexColumnList@3138554d
 
 		[0]:		
-		com.akiban.sql.parser.IndexColumn@69684b79
+		com.foundationdb.sql.parser.IndexColumn@69684b79
 		columnName: c1
 		tableName: null
 		ascending
 		[1]:		
-		com.akiban.sql.parser.IndexColumn@3e332aff
+		com.foundationdb.sql.parser.IndexColumn@3e332aff
 		columnName: c2
 		tableName: null
 		ascending

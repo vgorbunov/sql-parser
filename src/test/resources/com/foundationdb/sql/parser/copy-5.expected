@@ -1,4 +1,4 @@
-com.akiban.sql.parser.CopyStatementNode@24f9fdc
+com.foundationdb.sql.parser.CopyStatementNode@24f9fdc
 mode: FROM_TABLE
 tableName: t1
 filename: null
