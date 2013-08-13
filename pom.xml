@@ -11,14 +11,14 @@
         <version>7</version>
     </parent>
 
-    <groupId>com.akiban</groupId>
-    <artifactId>akiban-sql-parser</artifactId>
+    <groupId>com.foundationdb</groupId>
+    <artifactId>sql-parser</artifactId>
     <version>1.0.17-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Akiban SQL Parser</name>
+    <name>FoundationDB SQL Parser</name>
     <description>Production quality Java parser for the SQL language.</description>
-    <url>https://launchpad.net/akiban-sql-parser/</url>
+    <url>https://github.com/foundationdb/sql-parser</url>
 
     <licenses>
         <license>
@@ -29,22 +29,22 @@
     </licenses>
 
     <scm>
-        <url>https://code.launchpad.net/akiban-sql-parser</url>
-        <connection>scm:bazaar:https://code.launchpad.net/akiban-sql-parser</connection>
+        <url>git@github.com:foundationdb/sql-parser.git</url>
+        <connection>scm:git:git@github.com:foundationdb/sql-parser.git</connection>
     </scm>
 
     <organization>
-        <name>Akiban Technologies, Inc</name>
-        <url>http://www.akiban.com</url>
+        <name>FoundationDB, LLC</name>
+        <url>http://www.foundationdb.com</url>
     </organization>
     
     <developers>
         <developer>
             <id>mmcm</id>
             <name>Mike McMahon</name>
-            <email>mike.mcmahon@akiban.com</email>
-            <organization>Akiban Technologies, Inc.</organization>
-            <organizationUrl>http://www.akiban.com</organizationUrl>
+            <email>mike.mcmahon@foundationdb.com</email>
+            <organization>FoundationDB, LLC</organization>
+            <organizationUrl>http://www.foundationdb.com</organizationUrl>
             <roles>
                 <role>architect</role>
                 <role>developer</role>
