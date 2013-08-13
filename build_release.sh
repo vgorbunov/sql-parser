@@ -18,10 +18,10 @@
 #
 # Build build artifacts associated with a release
 #   - Bundles/packages
-#       - akiban-sql-parser-X.X.X.zip                (binary, Apache)
-#       - akiban-sql-parser-X.X.X.tar.gz             (binary, Apache)
-#       - akiban-sql-parser-X.X.X-source.zip         (source, Apache)
-#       - akiban-sql-parser-X.X.X-source.tar.gz      (source, Apache)
+#       - foundationdb-sql-parser-X.X.X.zip                (binary, Apache)
+#       - foundationdb-sql-parser-X.X.X.tar.gz             (binary, Apache)
+#       - foundationdb-sql-parser-X.X.X-source.zip         (source, Apache)
+#       - foundationdb-sql-parser-X.X.X-source.tar.gz      (source, Apache)
 #
 
 set -e
@@ -70,7 +70,7 @@ function do_md5 {
 
 
 REQUIRED_PROGS="bzr mvn javac sphinx-build curl awk sed tr basename zip tar gpg"
-BRANCH_DEFAULT="lp:~akiban-technologies/akiban-sql-parser"
+BRANCH_DEFAULT="git@github.com:foundationdb/sql-parser"
 
 VERSION=""
 BRANCH_URL=""
@@ -113,7 +113,7 @@ echo "Checking for md5 program"
 md5_type
 
 
-NAME="akiban-sql-parser"
+NAME="foundationdb-sql-parser"
 BRANCH_DIR="${WORKSPACE}/${VERSION}"
 SOURCE_DIR="${WORKSPACE}/${NAME}-${VERSION}-source"
 OPEN_DIR="${WORKSPACE}/${NAME}-${VERSION}"
