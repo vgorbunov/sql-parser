@@ -37,7 +37,7 @@
 
  */
 
-package com.akiban.sql.parser;
+package com.foundationdb.sql.parser;
 
 /**
  * This interface describes a character stream that maintains line and
