@@ -1,6 +1,6 @@
-com.akiban.sql
-com.akiban.sql.compiler
-com.akiban.sql.parser
-com.akiban.sql.types
-com.akiban.sql.unparser
-com.akiban.sql.views
+com.foundationdb.sql
+com.foundationdb.sql.compiler
+com.foundationdb.sql.parser
+com.foundationdb.sql.types
+com.foundationdb.sql.unparser
+com.foundationdb.sql.views
