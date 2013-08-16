@@ -171,7 +171,7 @@
                         <exclude>**/*.jj</exclude>
                         <exclude>**/*.features</exclude>
                         <exclude>release_files/**</exclude>
-                        <exclude>.bzrignore</exclude>
+                        <exclude>.gitignore</exclude>
                         <exclude>.idea/**</exclude>
                         <exclude>LICENSE.txt</exclude>
                         <exclude>README.rst</exclude>
