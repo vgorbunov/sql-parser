@@ -2502,6 +2502,7 @@ TOKEN [IGNORE_CASE] :
 | <RESET: "reset">
 | <RESULT: "result">
 | <RETAIN: "retain">
+| <RETRY: "retry">
 | <RR: "rr">
 | <RS: "rs">
 | <SECOND_MICROSECOND: "second_microsecond">
@@ -14570,6 +14571,7 @@ copyOption(CopyStatementNode stmt) throws StandardException :
 {
     String value;
     long lvalue;
+    int ivalue;
     CopyStatementNode.Format format;
 }
 {
@@ -14611,6 +14613,11 @@ copyOption(CopyStatementNode stmt) throws StandardException :
     <COMMIT> lvalue = exactNumber() [<ROWS>]
     {
         stmt.setCommitFrequency(lvalue);
+    }
+|
+    <RETRY> ivalue = uint_value()
+    {
+        stmt.setMaxRetries(ivalue);
     }
 }
 
@@ -15098,6 +15105,7 @@ nonReservedKeyword() :
 | tok = <RESTART>
 | tok = <RESULT>
 | tok = <RETAIN>
+| tok = <RETRY>
 | tok = <RETURNS>
 | tok = <ROLE>
 | tok = <ROLLUP>

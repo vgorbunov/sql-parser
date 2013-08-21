@@ -36,6 +36,7 @@ public class CopyStatementNode extends StatementNode
     private String delimiter, nullString, quote, escape, encoding;
     private boolean header;
     private long commitFrequency;
+    private int maxRetries;
     
     /**
      * Initializer for an CopyStatementNode
@@ -131,6 +132,12 @@ public class CopyStatementNode extends StatementNode
     public void setCommitFrequency(long commitFrequency) {
         this.commitFrequency = commitFrequency;
     }
+    public int getMaxRetries() {
+        return maxRetries;
+    }
+    public void setMaxRetries(int maxRetries) {
+        this.maxRetries = maxRetries;
+    }
 
     /**
      * Fill this node with a deep copy of the given node.
@@ -172,6 +179,7 @@ public class CopyStatementNode extends StatementNode
             "escape: " + escape + "\n" +
             "encoding: " + encoding + "\n" +
             "commitFrequency: " + commitFrequency + "\n" +
+            "maxRetries: " + maxRetries + "\n" +
             super.toString();
     }
 

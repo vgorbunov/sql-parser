@@ -1419,6 +1419,9 @@ public class NodeToString
         if (node.getCommitFrequency() != 0) {
             options = copyOption(str, "COMMIT", node.getCommitFrequency() + " ROWS", options);
         }
+        if (node.getMaxRetries() != 0) {
+            options = copyOption(str, "RETRY", node.getMaxRetries() + "", options);
+        }
         if (options) {
             str.append(")");
         }
