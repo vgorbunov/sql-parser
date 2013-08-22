@@ -9,6 +9,7 @@ quote: null
 escape: null
 encoding: null
 commitFrequency: 0
+maxRetries: 0
 statementType: COPY
 columnList: 	
 	com.foundationdb.sql.parser.ResultColumnList@1fd0fafc
