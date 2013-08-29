@@ -77,24 +77,11 @@ public class AlterTableNode extends DDLStatementNode
     public boolean defragment = false;
     public boolean truncateEndOfTable = false;
                 
-    public int behavior;             // currently for DROP COLUMN
+    public int behavior;             // StatementType.DROP_XXX for TRUNCATE TABLE, DROP COLUMN
 
-    private int changeType = UNKNOWN_TYPE;
+    private int changeType = UNKNOWN_TYPE; // DDLStatementNode.XXX_TYPE.
 
     private boolean truncateTable = false;
-
-    /**
-     * Initializer for a TRUNCATE TABLE
-     *
-     * @param objectName The name of the table being truncated
-     * @exception StandardException Thrown on error
-     */
-
-    public void init(Object objectName) throws StandardException { 
-        initAndCheck(objectName);
-        /* For now, this init() only called for truncate table */
-        truncateTable = true;
-    }
 
     /**
      * Initializer for a AlterTableNode for updating the statistics. The user
@@ -122,20 +109,27 @@ public class AlterTableNode extends DDLStatementNode
     }
 
     /**
-     * Initializer for a AlterTableNode for COMPRESS using temporary tables
+     * Initializer for a TRUNCATE TABLE or COMPRESS using temporary tables
      * rather than inplace compress
      *
      * @param objectName The name of the table being altered
-     * @param sequential Whether or not the COMPRESS is SEQUENTIAL
+     * @param arg2 <code>int[]</code>: Behavior CASCADE or RESTRICTED
+     *             <code>Boolean</code>: Whether or not the COMPRESS is SEQUENTIAL
      *
      * @exception StandardException Thrown on error
      */
-    public void init(Object objectName, Object sequential) throws StandardException {
+    public void init(Object objectName, Object arg2) throws StandardException {
         initAndCheck(objectName);
 
-        this.sequential = ((Boolean)sequential).booleanValue();
-        /* For now, this init() only called for compress table */
-        compressTable = true;
+        if (arg2 instanceof int[]) {
+            int[] bh = (int[])arg2;
+            this.behavior = bh[0];
+            truncateTable = true;
+        }
+        else {
+            this.sequential = ((Boolean)arg2).booleanValue();
+            compressTable = true;
+        }
     }
 
     /**
@@ -279,6 +273,14 @@ public class AlterTableNode extends DDLStatementNode
 
     public int getChangeType() { 
         return changeType; 
+    }
+
+    public int getBehavior() {
+        return behavior;
+    }
+
+    public boolean isCascade() {
+        return (behavior == StatementType.DROP_CASCADE);
     }
 
     /**
