@@ -49,20 +49,7 @@ import com.foundationdb.sql.StandardException;
 public interface Visitor
 {
     /**
-     * This is the default visit operation on a 
-     * QueryTreeNode.    It just returns the node.  This
-     * will typically suffice as the default visit 
-     * operation for most visitors unless the visitor 
-     * needs to count the number of nodes visited or 
-     * something like that.
-     * <p>
-     * Visitors will overload this method by implementing
-     * a version with a signature that matches a specific
-     * type of node.    For example, if I want to do
-     * something special with aggregate nodes, then
-     * that Visitor will implement a 
-     *              <I> visit(AggregateNode node)</I>
-     * method which does the aggregate specific processing.
+     * Method called for each node that is visited.
      *
      * @param node      the node to process
      *

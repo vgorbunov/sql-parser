@@ -13897,6 +13897,8 @@ truncateStatement() throws StandardException :
     <TRUNCATE>
 (
     statementNode = truncateTableStatement()
+|
+    statementNode = truncateGroupStatement()
 )
     {
         return statementNode;
@@ -13907,12 +13909,31 @@ StatementNode
 truncateTableStatement() throws StandardException :
 {
     TableName tableName;
+    int[] behavior = new int[1];
 }
 {
-    <TABLE> tableName = qualifiedName() 
+    <TABLE> tableName = qualifiedName()
+    dropBehavior(behavior)
     {
         return (StatementNode)nodeFactory.getNode(NodeTypes.ALTER_TABLE_NODE,
                                                   tableName,
+                                                  behavior,
+                                                  parserContext);
+    }
+}
+
+StatementNode
+truncateGroupStatement() throws StandardException :
+{
+    TableName groupName;
+}
+{
+    <GROUP> groupName = qualifiedName()
+    {
+        // Turns into DROP TABLE g CASCADE
+        return (StatementNode)nodeFactory.getNode(NodeTypes.ALTER_TABLE_NODE,
+                                                  groupName,
+                                                  new int[] { StatementType.DROP_CASCADE },
                                                   parserContext);
     }
 }
