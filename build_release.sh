@@ -18,10 +18,10 @@
 #
 # Build build artifacts associated with a release
 #   - Bundles/packages
-#       - foundationdb-sql-parser-X.X.X.zip                (binary, Apache)
-#       - foundationdb-sql-parser-X.X.X.tar.gz             (binary, Apache)
-#       - foundationdb-sql-parser-X.X.X-source.zip         (source, Apache)
-#       - foundationdb-sql-parser-X.X.X-source.tar.gz      (source, Apache)
+#       - fdb-sql-parser-X.X.X.zip                (binary, Apache)
+#       - fdb-sql-parser-X.X.X.tar.gz             (binary, Apache)
+#       - fdb-sql-parser-X.X.X-source.zip         (source, Apache)
+#       - fdb-sql-parser-X.X.X-source.tar.gz      (source, Apache)
 #
 
 set -e
@@ -113,7 +113,7 @@ echo "Checking for md5 program"
 md5_type
 
 
-NAME="foundationdb-sql-parser"
+NAME="fdb-sql-parser"
 BRANCH_DIR="${WORKSPACE}/${VERSION}"
 SOURCE_DIR="${WORKSPACE}/${NAME}-${VERSION}-source"
 OPEN_DIR="${WORKSPACE}/${NAME}-${VERSION}"

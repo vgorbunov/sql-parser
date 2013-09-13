@@ -100,7 +100,7 @@ To compile and run the example from the command line, copy the code into a
 file named ``ParserHello.java`` and ensure the parser jar file, found in
 the root directory of the binary package, is in your ``classpath``::
 
-  $ export CLASSPATH="foundationdb-sql-parser-1.0.16.jar:."
+  $ export CLASSPATH="fdb-sql-parser-1.0.16.jar:."
 
 Compile::
 
