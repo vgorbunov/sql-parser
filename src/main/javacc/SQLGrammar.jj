@@ -2511,6 +2511,7 @@ TOKEN [IGNORE_CASE] :
 | <SEQUENTIAL: "sequential">
 | <SETS: "sets">
 | <SHARE: "share">
+| <SHOW: "show">
 | <SHUTDOWN: "shutdown">
 | <SPECIFIC: "specific">
 | <SQLID: "sqlid">
@@ -3049,6 +3050,8 @@ StatementPart(Token[] tokenHolder) throws StandardException :
     statementNode = transactionControlStatement()
 |
     statementNode = copyStatement()
+|
+    statementNode = showStatement()
 )
     {
         return statementNode;
@@ -12512,6 +12515,20 @@ setConfigurationStatement() throws StandardException :
     }
 }
 
+StatementNode
+showStatement() throws StandardException :
+{
+    Token variable;
+}
+{
+    <SHOW> variable = <IDENTIFIER>
+    {
+        return (StatementNode)nodeFactory.getNode(NodeTypes.SHOW_CONFIGURATION_NODE,
+                                                  variable.image, 
+                                                  parserContext);
+    }
+}
+
 ValueNode
 valueSpecification() throws StandardException :
 {
@@ -15147,6 +15164,7 @@ nonReservedKeyword() :
 | tok = <SESSION> // SQL92 reserved, SQL2003 non-reserved
 | tok = <SETS>
 | tok = <SHARE>
+| tok = <SHOW>
 | tok = <SHUTDOWN>
 | tok = <SPACE> // SQL92 reserved, SQL2003 non-reserved
 | tok = <SPECIFIC>

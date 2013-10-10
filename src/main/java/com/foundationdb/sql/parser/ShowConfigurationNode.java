@@ -19,23 +19,20 @@ package com.foundationdb.sql.parser;
 import com.foundationdb.sql.StandardException;
 
 /**
- * A SET statement for a non-standard configuration variable.
+ * A SHOW statement for a configuration variable.
  */
 
-public class SetConfigurationNode extends StatementNode
+public class ShowConfigurationNode extends StatementNode
 {
-    private String variable, value;
+    private String variable;
 
     /**
-     * Initializer for SetTransactionIsolationNode
+     * Initializer for ShowTransactionIsolationNode
      *
      * @param variable name of the variable
-     * @param value the new value
      */
-    public void init(Object variable,
-                     Object value) {
+    public void init(Object variable) {
         this.variable = (String)variable;
-        this.value = (String)value;
     }
 
     /**
@@ -44,9 +41,8 @@ public class SetConfigurationNode extends StatementNode
     public void copyFrom(QueryTreeNode node) throws StandardException {
         super.copyFrom(node);
 
-        SetConfigurationNode other = (SetConfigurationNode)node;
+        ShowConfigurationNode other = (ShowConfigurationNode)node;
         this.variable = other.variable;
-        this.value = other.value;
     }
 
     /**
@@ -58,7 +54,6 @@ public class SetConfigurationNode extends StatementNode
 
     public String toString() {
         return "variable: " + variable + "\n" +
-               "value: " + value + "\n" +
             super.toString();
     }
 
@@ -66,12 +61,8 @@ public class SetConfigurationNode extends StatementNode
         return variable;
     }
 
-    public String getValue() {
-        return value;
-    }
-
     public String statementToString() {
-        return "SET " + variable;
+        return "SHOW " + variable;
     }
 
 }

@@ -327,6 +327,8 @@ public interface NodeNames
 
     static final String SET_TRANSACTION_ISOLATION_NODE_NAME = "com.foundationdb.sql.parser.SetTransactionIsolationNode";
 
+    static final String SHOW_CONFIGURATION_NODE_NAME = "com.foundationdb.sql.parser.ShowConfigurationNode";
+
     static final String SIMPLE_CASE_NODE_NAME = "com.foundationdb.sql.parser.SimpleCaseNode";
 
     static final String SIMPLE_STRING_OPERATOR_NODE_NAME = "com.foundationdb.sql.parser.SimpleStringOperatorNode";
