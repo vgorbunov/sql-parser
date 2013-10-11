@@ -47,6 +47,8 @@ public class NodeToString
             return setTransactionAccessNode((SetTransactionAccessNode)node);
         case NodeTypes.SET_CONFIGURATION_NODE:
             return setConfigurationNode((SetConfigurationNode)node);
+        case NodeTypes.SHOW_CONFIGURATION_NODE:
+            return showConfigurationNode((ShowConfigurationNode)node);
         case NodeTypes.TABLE_ELEMENT_LIST:
             return tableElementList((TableElementList)node);
         case NodeTypes.COLUMN_DEFINITION_NODE:
@@ -1297,6 +1299,11 @@ public class NodeToString
     protected String setConfigurationNode(SetConfigurationNode node)
             throws StandardException {
         return node.statementToString() + " = '" + node.getValue() + "'";
+    }
+
+    protected String showConfigurationNode(ShowConfigurationNode node)
+            throws StandardException {
+        return node.statementToString();
     }
 
     protected String rowCtorNode(RowConstructorNode row) throws StandardException

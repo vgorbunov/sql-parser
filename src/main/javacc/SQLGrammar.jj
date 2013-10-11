@@ -2511,6 +2511,7 @@ TOKEN [IGNORE_CASE] :
 | <SEQUENTIAL: "sequential">
 | <SETS: "sets">
 | <SHARE: "share">
+| <SHOW: "show">
 | <SHUTDOWN: "shutdown">
 | <SPECIFIC: "specific">
 | <SQLID: "sqlid">
@@ -3049,6 +3050,8 @@ StatementPart(Token[] tokenHolder) throws StandardException :
     statementNode = transactionControlStatement()
 |
     statementNode = copyStatement()
+|
+    statementNode = showStatement()
 )
     {
         return statementNode;
@@ -12498,16 +12501,52 @@ StatementNode
 setConfigurationStatement() throws StandardException :
 {
     Token variable;
-    CharConstantNode value = null;
+    String value = null;
 }
 {
     variable = <IDENTIFIER>
     ( <EQUALS_OPERATOR> | <TO> )
-    ( value = stringLiteral() | <_DEFAULT> )
+    value = configurationValue()
     {
         return (StatementNode)nodeFactory.getNode(NodeTypes.SET_CONFIGURATION_NODE,
+                                                  variable.image, value,
+                                                  parserContext);
+    }
+}
+
+String
+configurationValue() throws StandardException :
+{
+    CharConstantNode literal;
+    Token token;
+}
+{
+    literal = stringLiteral()
+    {
+        return literal.getString();
+    }
+|
+    <_DEFAULT>
+    {
+        return null;
+    }
+|
+    ( token = <IDENTIFIER> | token = <EXACT_NUMERIC> | token = <TRUE> | token = <FALSE> )
+    {
+        return token.image;
+    }
+}
+
+StatementNode
+showStatement() throws StandardException :
+{
+    Token variable;
+}
+{
+    <SHOW> variable = <IDENTIFIER>
+    {
+        return (StatementNode)nodeFactory.getNode(NodeTypes.SHOW_CONFIGURATION_NODE,
                                                   variable.image, 
-                                                  (value == null) ? null : value.getValue(),
                                                   parserContext);
     }
 }
@@ -15147,6 +15186,7 @@ nonReservedKeyword() :
 | tok = <SESSION> // SQL92 reserved, SQL2003 non-reserved
 | tok = <SETS>
 | tok = <SHARE>
+| tok = <SHOW>
 | tok = <SHUTDOWN>
 | tok = <SPACE> // SQL92 reserved, SQL2003 non-reserved
 | tok = <SPECIFIC>
