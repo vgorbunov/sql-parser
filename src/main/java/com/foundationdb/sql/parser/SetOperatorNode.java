@@ -86,11 +86,18 @@ public abstract class SetOperatorNode extends TableOperatorNode
          * may have been a "*" in the list.  (We will set the names and
          * column types at that time, as expected.)
          */
-        resultColumns = (ResultColumnList)
-            getNodeFactory().copyNode(leftResultSet.getResultColumns(),
-                                      getParserContext());
+        resultColumns = copyResultColumnsFromLeft();
     }
 
+    /**
+     * Deep copy of the left result ResultColumnList. 
+     * @return
+     * @throws StandardException
+     */
+    public ResultColumnList copyResultColumnsFromLeft() throws StandardException {
+        return (ResultColumnList) getNodeFactory().copyNode(leftResultSet.getResultColumns(),
+                        getParserContext());
+    }
     /**
      * Fill this node with a deep copy of the given node.
      */
