@@ -31,7 +31,6 @@ tableElementList:
 	
 	indexName: indx1
 	joinType: null
-	location: null
 	indexColumnList: 		
 		com.foundationdb.sql.parser.IndexColumnList@63deebc8
 		

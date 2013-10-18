@@ -8,7 +8,6 @@ tableName: t1
 joinType: null
 properties: null
 existenceCheck: NO_CONDITION
-storageLocation: null
 	
 	com.foundationdb.sql.parser.IndexColumnList@1e4b2d10
 	
