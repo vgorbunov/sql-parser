@@ -665,6 +665,9 @@ public final class NodeFactoryImpl extends NodeFactory
         case NodeTypes.PARTITION_BY_COLUMN:
             return NodeNames.PARTITION_BY_COLUMN_NAME;
 
+        case NodeTypes.STORAGE_FORMAT_NODE:
+            return NodeNames.STORAGE_FORMAT_NODE_NAME;
+
         default:
             throw new StandardException("Not implemented");
         }
