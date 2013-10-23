@@ -343,6 +343,8 @@ public interface NodeNames
 
     static final String STATIC_METHOD_CALL_NODE_NAME = "com.foundationdb.sql.parser.StaticMethodCallNode";
 
+    static final String STORAGE_FORMAT_NODE_NAME = "com.foundationdb.sql.parser.StorageFormatNode";
+
     static final String SUBQUERY_LIST_NAME = "com.foundationdb.sql.parser.SubqueryList";
 
     static final String SUBQUERY_NODE_NAME = "com.foundationdb.sql.parser.SubqueryNode";

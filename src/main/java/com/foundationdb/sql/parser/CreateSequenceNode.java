@@ -57,6 +57,7 @@ public class CreateSequenceNode extends DDLStatementNode
     private long maxValue;
     private long minValue;
     private boolean cycle;
+    private StorageFormatNode storageFormat;
 
     /**
      * Initializer for a CreateSequenceNode
@@ -77,7 +78,8 @@ public class CreateSequenceNode extends DDLStatementNode
                       Object stepValue,
                       Object maxValue,
                       Object minValue,
-                      Object cycle) 
+                      Object cycle,
+                      Object storageFormat) 
             throws StandardException {
 
         this.sequenceName = (TableName)sequenceName;
@@ -118,6 +120,7 @@ public class CreateSequenceNode extends DDLStatementNode
         }
         this.cycle = cycle != null ? ((Boolean)cycle).booleanValue() : Boolean.FALSE;
 
+        this.storageFormat = (StorageFormatNode)storageFormat;
     }
 
     /**
@@ -135,6 +138,8 @@ public class CreateSequenceNode extends DDLStatementNode
         this.maxValue = other.maxValue;
         this.minValue = other.minValue;
         this.cycle = other.cycle;
+        this.storageFormat = (StorageFormatNode)getNodeFactory().copyNode(other.storageFormat,
+                                                                          getParserContext());
     }
 
     /**
@@ -152,6 +157,23 @@ public class CreateSequenceNode extends DDLStatementNode
             "maxValue: " + maxValue + "\n" +
             "minValue:" + minValue + "\n" +
             "cycle: " + cycle + "\n";
+    }
+
+    public void printSubNodes(int depth) {
+        super.printSubNodes(depth);
+
+        if (storageFormat != null) {
+            printLabel(depth, "storageFormat: ");
+            storageFormat.treePrint(depth + 1);
+        }
+    }
+
+    void acceptChildren(Visitor v) throws StandardException {
+        super.acceptChildren(v);
+
+        if (storageFormat != null) {
+            storageFormat = (StorageFormatNode)storageFormat.accept(v);
+        }
     }
 
     public String statementToString() {
@@ -176,6 +198,11 @@ public class CreateSequenceNode extends DDLStatementNode
 
     public final boolean isCycle() {
         return cycle;
+    }
+    
+    public StorageFormatNode getStorageFormat()
+    {
+        return storageFormat;
     }
 
 }

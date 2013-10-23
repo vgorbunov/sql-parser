@@ -8,7 +8,6 @@ tableName: group_table
 joinType: LEFT_OUTER
 properties: null
 existenceCheck: NO_CONDITION
-storageLocation: IN_MEMORY
 	
 	com.foundationdb.sql.parser.IndexColumnList@46e45076
 
@@ -27,3 +26,6 @@ storageLocation: IN_MEMORY
 	columnName: c3
 	tableName: null
 	ascending
+storageFormat: 	
+	com.foundationdb.sql.parser.StorageFormatNode@5575b132
+	format: in_memory

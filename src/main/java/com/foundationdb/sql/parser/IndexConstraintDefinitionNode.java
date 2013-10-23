@@ -24,14 +24,14 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode impl
     private String indexName;
     private IndexColumnList indexColumnList;
     private JoinType joinType;
-    private StorageLocation location;
+    private StorageFormatNode storageFormat;
     
     @Override
     public void init(Object tableName,
                      Object indexColumnList,
                      Object indexName,
                      Object joinType,
-                     Object location)
+                     Object storage)
     {
         super.init(tableName,
                    ConstraintType.INDEX,
@@ -45,7 +45,7 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode impl
         this.indexName = (String) indexName;
         this.indexColumnList = (IndexColumnList) indexColumnList;
         this.joinType = (JoinType) joinType;
-        this.location = (StorageLocation) location;
+        this.storageFormat = (StorageFormatNode) storage;
     }
     
     public String getIndexName()
@@ -63,9 +63,9 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode impl
         return joinType;
     }
     
-    public StorageLocation getLocation()
+    public StorageFormatNode getStorageFormat()
     {
-        return location;
+        return storageFormat;
     }
     
     // This is used for the non-unique "INDEX" defintions only
@@ -88,7 +88,8 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode impl
         this.indexName = other.indexName;
         this.indexColumnList = other.indexColumnList;
         this.joinType = other.joinType;
-        this.location = other.location;
+        this.storageFormat = (StorageFormatNode)getNodeFactory().copyNode(other.storageFormat,
+                                                                          getParserContext());
     }
     
     @Override
@@ -97,7 +98,6 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode impl
         return super.toString()
                 + "\nindexName: " + indexName
                 + "\njoinType: " + joinType
-                + "\nlocation: " + location
                 ;
     }
 
@@ -107,6 +107,10 @@ public class IndexConstraintDefinitionNode extends ConstraintDefinitionNode impl
         if (indexColumnList != null) {
             printLabel(depth, "indexColumnList: ");
             indexColumnList.treePrint(depth + 1);
+        }
+        if (storageFormat != null) {
+            printLabel(depth, "storageFormat: ");
+            storageFormat.treePrint(depth + 1);
         }
     }
     

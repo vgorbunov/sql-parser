@@ -61,7 +61,7 @@ public class CreateIndexNode extends DDLStatementNode implements IndexDefinition
     JoinType joinType;
     Properties properties;
     ExistenceCheck existenceCheck;
-    StorageLocation storageLocation;
+    StorageFormatNode storageFormat;
     
     /**
      * Initializer for a CreateIndexNode
@@ -84,7 +84,7 @@ public class CreateIndexNode extends DDLStatementNode implements IndexDefinition
                      Object joinType,
                      Object properties,
                      Object existenceCheck,
-                     Object storageLocation) 
+                     Object storageFormat) 
             throws StandardException {
         initAndCheck(indexName);
         this.unique = ((Boolean)unique).booleanValue();
@@ -95,7 +95,7 @@ public class CreateIndexNode extends DDLStatementNode implements IndexDefinition
         this.joinType = (JoinType)joinType;
         this.properties = (Properties)properties;
         this.existenceCheck = (ExistenceCheck)existenceCheck;
-        this.storageLocation = (StorageLocation) storageLocation;
+        this.storageFormat = (StorageFormatNode) storageFormat;
     }
 
     /**
@@ -116,7 +116,8 @@ public class CreateIndexNode extends DDLStatementNode implements IndexDefinition
         this.joinType = other.joinType;
         this.properties = other.properties; // TODO: Clone?
         this.existenceCheck = other.existenceCheck;
-        this.storageLocation = other.storageLocation;
+        this.storageFormat = (StorageFormatNode)getNodeFactory().copyNode(other.storageFormat,
+                                                                          getParserContext());
     }
 
     /**
@@ -134,13 +135,16 @@ public class CreateIndexNode extends DDLStatementNode implements IndexDefinition
             "tableName: " + tableName + "\n" +
             "joinType: " + joinType + "\n" +
             "properties: " + properties + "\n" +
-            "existenceCheck: " + existenceCheck + "\n" +
-            "storageLocation: " + storageLocation + "\n";
+            "existenceCheck: " + existenceCheck + "\n";
     }
 
     public void printSubNodes(int depth) {
         if (columnList != null) {
             columnList.treePrint(depth+1);
+        }
+        if (storageFormat != null) {
+            printLabel(depth, "storageFormat: ");
+            storageFormat.treePrint(depth + 1);
         }
     }
     public String statementToString() {
@@ -177,8 +181,8 @@ public class CreateIndexNode extends DDLStatementNode implements IndexDefinition
         return existenceCheck;
     }
     
-    public StorageLocation getStorageLocation()
+    public StorageFormatNode getStorageFormat()
     {
-        return storageLocation;
+        return storageFormat;
     }
 }

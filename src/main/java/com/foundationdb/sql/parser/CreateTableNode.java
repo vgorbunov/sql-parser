@@ -72,6 +72,7 @@ public class CreateTableNode extends DDLStatementNode
     private ResultSetNode queryExpression;
     private boolean withData;
     private ExistenceCheck existenceCheck;
+    private StorageFormatNode storageFormat;
 
     /**
      * Initializer for a CreateTableNode for a base table
@@ -82,6 +83,7 @@ public class CreateTableNode extends DDLStatementNode
      * @param properties The optional list of properties associated with
      *              the table.
      * @param lockGranularity The lock granularity.
+     * @param storageFormat The storage format to use.
      *
      * @exception StandardException Thrown on error
      */
@@ -90,7 +92,8 @@ public class CreateTableNode extends DDLStatementNode
                      Object tableElementList,
                      Object properties,
                      Object lockGranularity,
-                     Object existenceCheck)
+                     Object existenceCheck,
+                     Object storageFormat)
             throws StandardException {
         tableType = BASE_TABLE_TYPE;
         this.lockGranularity = ((Character)lockGranularity).charValue();
@@ -103,6 +106,7 @@ public class CreateTableNode extends DDLStatementNode
         this.tableElementList = (TableElementList)tableElementList;
         this.properties = (Properties)properties;
         this.existenceCheck = (ExistenceCheck)existenceCheck;
+        this.storageFormat = (StorageFormatNode)storageFormat;
     }
 
     /**
@@ -111,8 +115,6 @@ public class CreateTableNode extends DDLStatementNode
      * @param newObjectName The name of the new object being declared (ie temporary table)
      * @param tableElementList The elements of the table: columns,
      *              constraints, etc.
-     * @param properties The optional list of properties associated with
-     *              the table.
      * @param onCommitDeleteRows If true, on commit delete rows else on commit preserve rows of temporary table.
      * @param onRollbackDeleteRows If true, on rollback, delete rows from temp tables which were logically modified. true is the only supported value
      *
@@ -121,7 +123,6 @@ public class CreateTableNode extends DDLStatementNode
 
     public void init(Object newObjectName,
                      Object tableElementList,
-                     Object properties,
                      Object onCommitDeleteRows,
                      Object onRollbackDeleteRows,
                      Object existenceCheck)
@@ -132,7 +133,6 @@ public class CreateTableNode extends DDLStatementNode
         this.onRollbackDeleteRows = ((Boolean)onRollbackDeleteRows).booleanValue();
         initAndCheck(newObjectName);
         this.tableElementList = (TableElementList)tableElementList;
-        this.properties = (Properties)properties;
         this.existenceCheck = (ExistenceCheck)existenceCheck;
         assert this.onRollbackDeleteRows;
     }
@@ -179,6 +179,8 @@ public class CreateTableNode extends DDLStatementNode
             getNodeFactory().copyNode(other.queryExpression, getParserContext());
         this.withData = other.withData;
         this.existenceCheck = other.existenceCheck;
+        this.storageFormat = (StorageFormatNode)getNodeFactory().copyNode(other.storageFormat,
+                                                                          getParserContext());
     }
 
     /**
@@ -240,6 +242,11 @@ public class CreateTableNode extends DDLStatementNode
         return existenceCheck;
     }
 
+    public StorageFormatNode getStorageFormat()
+    {
+        return storageFormat;
+    }
+
     /**
      * Prints the sub-nodes of this object.  See QueryTreeNode.java for
      * how tree printing is supposed to work.
@@ -253,6 +260,10 @@ public class CreateTableNode extends DDLStatementNode
         if (queryExpression != null) {
             printLabel(depth, "queryExpression: ");
             queryExpression.treePrint(depth + 1);
+        }
+        if (storageFormat != null) {
+            printLabel(depth, "storageFormat: ");
+            storageFormat.treePrint(depth + 1);
         }
     }
 
@@ -278,6 +289,9 @@ public class CreateTableNode extends DDLStatementNode
         }
         if (queryExpression != null) {
             queryExpression.accept(v);
+        }
+        if (storageFormat != null) {
+            storageFormat = (StorageFormatNode)storageFormat.accept(v);
         }
     }
         

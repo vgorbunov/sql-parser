@@ -18,6 +18,8 @@ package com.foundationdb.sql.unparser;
 
 import com.foundationdb.sql.parser.*;
 
+import java.util.Map;
+
 import com.foundationdb.sql.StandardException;
 
 public class NodeToString
@@ -63,6 +65,8 @@ public class NodeToString
             return indexColumnList((IndexColumnList)node);
         case NodeTypes.INDEX_COLUMN:
             return indexColumn((IndexColumn)node);
+        case NodeTypes.STORAGE_FORMAT_NODE:
+            return storageFormatNode((StorageFormatNode)node);
         case NodeTypes.CREATE_ALIAS_NODE:
             return createAliasNode((CreateAliasNode)node);
         case NodeTypes.RENAME_NODE:
@@ -299,11 +303,34 @@ public class NodeToString
                .append(indexColumnList(node.getIndexColumnList()))
                .append(')');
         
-        StorageLocation loc = node.getLocation();
-        if (loc != null)
-            builder.append(" AS ").append(loc);
+        StorageFormatNode storage = node.getStorageFormat();
+        if (storage != null)
+            builder.append(toString(storage));
         
         return builder.toString();
+    }
+
+    protected String storageFormatNode(StorageFormatNode node) throws StandardException {
+        StringBuilder str = new StringBuilder(" STORAGE_FORMAT ");
+        str.append(node.getFormat());
+        boolean first = true;
+        for (Map.Entry<String,String> entry : node.getOptions().entrySet()) {
+            if (first) {
+                str.append("(");
+                first = false;
+            }
+            else {
+                str.append(", ");
+            }
+            str.append(entry.getKey());
+            str.append(" = '");
+            str.append(entry.getValue().replace("'", "''"));
+            str.append("'");
+        }
+        if (!first) {
+            str.append(")");
+        }
+        return str.toString();
     }
 
     protected String createTableNode(CreateTableNode node) throws StandardException {
@@ -321,6 +348,8 @@ public class NodeToString
             if (!node.isWithData()) str.append("NO ");
             str.append("DATA");
         }
+        if (node.getStorageFormat() != null)
+            str.append(toString(node.getStorageFormat()));
         return str.toString();
     }
 

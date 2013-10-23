@@ -26,7 +26,6 @@ tableElementList:
 	
 	indexName: indx1
 	joinType: null
-	location: BTREE
 	indexColumnList: 		
 		com.foundationdb.sql.parser.IndexColumnList@114beb40
 
@@ -35,3 +34,6 @@ tableElementList:
 		columnName: c1
 		tableName: null
 		descending
+	storageFormat: 		
+		com.foundationdb.sql.parser.StorageFormatNode@1dbc21fd
+		format: in_memory

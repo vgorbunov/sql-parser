@@ -8,7 +8,6 @@ tableName: group_table
 joinType: LEFT_OUTER
 properties: null
 existenceCheck: NO_CONDITION
-storageLocation: null
 	
 	com.foundationdb.sql.parser.IndexColumnList@46e45076
 

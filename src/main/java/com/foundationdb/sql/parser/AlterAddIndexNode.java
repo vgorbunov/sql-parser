@@ -27,7 +27,7 @@ public class AlterAddIndexNode extends TableElementNode
     IndexColumnList indexColumnList;
     JoinType joinType ;
     Properties properties;
-    StorageLocation storageLocation;
+    StorageFormatNode storageFormat;
     
     @Override
     public void init(Object cond,
@@ -36,7 +36,7 @@ public class AlterAddIndexNode extends TableElementNode
                      Object indexColumnList,
                      Object joinType,
                      Object properties,
-                     Object location)
+                     Object storage)
     {
         super.init(indexName, ElementType.AT_ADD_INDEX);
         
@@ -45,7 +45,7 @@ public class AlterAddIndexNode extends TableElementNode
         this.indexColumnList = (IndexColumnList) indexColumnList;
         this.joinType = (JoinType) joinType;
         this.properties = (Properties) properties;
-        this.storageLocation = (StorageLocation) location;
+        this.storageFormat = (StorageFormatNode) storage;
     }
     
     public String getIndexName()
@@ -67,7 +67,8 @@ public class AlterAddIndexNode extends TableElementNode
         this.indexColumnList = other.indexColumnList;
         this.joinType = other.joinType;
         this.properties = other.properties;
-        this.storageLocation = other.storageLocation;
+        this.storageFormat = (StorageFormatNode)getNodeFactory().copyNode(other.storageFormat,
+                                                                          getParserContext());
     }
 
     @Override
@@ -78,8 +79,24 @@ public class AlterAddIndexNode extends TableElementNode
                 + "\nunique: "+ unique
                 + "\nindexColumnList: " + indexColumnList
                 + "\njoinType: " + joinType
-                + "\nproperties: " + properties
-                + "\nlocation: " + storageLocation;
+                + "\nproperties: " + properties;
+    }
+
+    public void printSubNodes(int depth) {
+        super.printSubNodes(depth);
+
+        if (storageFormat != null) {
+            printLabel(depth, "storageFormat: ");
+            storageFormat.treePrint(depth + 1);
+        }
+    }
+
+    void acceptChildren(Visitor v) throws StandardException {
+        super.acceptChildren(v);
+
+        if (storageFormat != null) {
+            storageFormat = (StorageFormatNode)storageFormat.accept(v);
+        }
     }
 
     public String statementToString()
@@ -112,8 +129,8 @@ public class AlterAddIndexNode extends TableElementNode
         return properties;
     }
     
-    public StorageLocation getStorageLocation()
+    public StorageFormatNode getStorageFormat()
     {
-        return storageLocation;
+        return storageFormat;
     }
 }
