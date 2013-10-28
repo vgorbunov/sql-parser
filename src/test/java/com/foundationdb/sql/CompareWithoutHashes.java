@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 public class CompareWithoutHashes
 {
-    public static final String HASH_REGEX = "[\\p{Alnum}]*\\@[\\p{XDigit}]+";
+    public static final String HASH_REGEX = "([\\p{Alnum}]*)\\@[\\p{XDigit}]+";
 
     private Pattern pattern;
     private Map<String,String> equivalences;
@@ -90,10 +90,9 @@ public class CompareWithoutHashes
         Matcher matcher = pattern.matcher(s);
         List<String[]> matches = new ArrayList<String[]>();
         while (matcher.find()) {
-            String hash = matcher.group();
             String[] match = {
-                hash.substring(0,hash.indexOf('@')),
-                hash
+                matcher.group(1),
+                matcher.group(0)
             };
             matches.add(match);
         }
