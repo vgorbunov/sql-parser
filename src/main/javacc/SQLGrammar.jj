@@ -12545,12 +12545,20 @@ StatementNode
 showStatement() throws StandardException :
 {
     Token variable;
+    String ident;
 }
 {
-    <SHOW> variable = <IDENTIFIER>
+    <SHOW>
+(
+    variable = <IDENTIFIER>
+    { ident = variable.image; }
+|
+    <TRANSACTION> <ISOLATION> <LEVEL>
+    { ident = "transaction_isolation"; }
+)
     {
         return (StatementNode)nodeFactory.getNode(NodeTypes.SHOW_CONFIGURATION_NODE,
-                                                  variable.image, 
+                                                  ident, 
                                                   parserContext);
     }
 }
