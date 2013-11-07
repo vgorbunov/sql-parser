@@ -357,6 +357,10 @@ public class TypeId
     public static final TypeId LONGBLOB_ID = new TypeId(FormatIds.BLOB_TYPE_ID, LONGBLOB_NAME);
     public static final TypeId LONGTEXT_ID = new TypeId(FormatIds.CLOB_TYPE_ID, LONGTEXT_NAME);
 
+    public static final TypeId NATIONAL_CHAR_ID = new TypeId(FormatIds.CHAR_TYPE_ID, NATIONAL_CHAR_NAME);
+    public static final TypeId NATIONAL_VARCHAR_ID = new TypeId(FormatIds.VARCHAR_TYPE_ID, NATIONAL_VARCHAR_NAME);
+    public static final TypeId NATIONAL_LONGVARCHAR_ID = new TypeId(FormatIds.LONGVARCHAR_TYPE_ID, NATIONAL_LONGVARCHAR_NAME);
+
     private static final TypeId[] ALL_BUILTIN_TYPE_IDS = {
         BOOLEAN_ID,
         SMALLINT_ID,
@@ -514,6 +518,15 @@ public class TypeId
         case Types.SQLXML: // 2009
             return XML_ID;
                         
+        case Types.NCHAR:
+            return NATIONAL_CHAR_ID;
+
+        case Types.NVARCHAR:
+            return NATIONAL_VARCHAR_ID;
+
+        case Types.NCLOB:
+            return NATIONAL_LONGVARCHAR_ID;
+
         default:
             return null;
         }
@@ -799,6 +812,15 @@ public class TypeId
         }
         if (SQLTypeName.equals(YEAR_NAME)) {
             return YEAR_ID;
+        }
+        if (SQLTypeName.equals(NATIONAL_CHAR_NAME)) {
+            return NATIONAL_CHAR_ID;
+        }
+        if (SQLTypeName.equals(NATIONAL_VARCHAR_NAME)) {
+            return NATIONAL_VARCHAR_ID;
+        }
+        if (SQLTypeName.equals(NATIONAL_LONGVARCHAR_NAME)) {
+            return NATIONAL_LONGVARCHAR_ID;
         }
 
         // Types defined below here are SQL types and non-JDBC types that are
