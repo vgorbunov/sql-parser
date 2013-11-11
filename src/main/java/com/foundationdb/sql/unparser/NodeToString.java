@@ -730,10 +730,10 @@ public class NodeToString
     }
 
     protected String allResultColumn(AllResultColumn node) throws StandardException {
-		if (node.getTableName() == null) {
-        return "*";
+		if (node.getFullTableName() == null) {
+        	return "*";
 		} else {
-			return node.getTableName() + ".*";
+			return node.getFullTableName() + ".*";
 		}
 
     }
